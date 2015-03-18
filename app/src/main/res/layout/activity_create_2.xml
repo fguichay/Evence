@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:ems="10"
+            android:id="@+id/editText4"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:hint="Address of Event" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Size of Geofence"
+            android:id="@+id/textView"
+            android:layout_marginTop="15dp"
+            android:textSize="20dp" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="56dp"
+            android:drawSelectorOnTop="true"
+            android:entries="@array/array_name"
+            android:spinnerMode="dropdown" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:ems="10"
+            android:id="@+id/editText5"
+            android:layout_marginTop="25dp"
+            android:hint="Geofence Start Time" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="385dp"
+            android:layout_height="wrap_content"
+            android:text="Next Page"
+            android:layout_marginTop="100dp"
+            android:layout_gravity="center_horizontal" />
+
+    </LinearLayout>
+</LinearLayout>
