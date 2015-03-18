@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -80,7 +81,16 @@ public class MainEventsActivity extends ActionBarActivity {
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
 
+        View.OnClickListener listnr = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateEvent_1.class);
+                startActivity(intent);
+            }
+        };
 
+        Button btn = (Button) findViewById(R.id.myButton);
+        btn.setOnClickListener(listnr);
 
     }
 
