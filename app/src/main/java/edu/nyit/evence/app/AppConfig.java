@@ -9,4 +9,5 @@ public class AppConfig {
 
     // Server user register url
     public static String URL_REGISTER = "http://216.37.100.4/evence_login_api/";
+
 }
