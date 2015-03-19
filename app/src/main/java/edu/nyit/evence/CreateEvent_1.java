@@ -13,7 +13,8 @@ import android.view.View.OnClickListener;
 
 public class CreateEvent_1 extends Activity {
 
-    Button button;
+    Button btnNextPage;
+    Button btnCancel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,9 +27,9 @@ public class CreateEvent_1 extends Activity {
 
         final Context context = this;
 
-        button = (Button) findViewById(R.id.button1);
+        btnNextPage = (Button) findViewById(R.id.button1);
 
-        button.setOnClickListener(new OnClickListener() {
+        btnNextPage.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -40,6 +41,16 @@ public class CreateEvent_1 extends Activity {
 
         });
 
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, MainEventsActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
+
 
 }

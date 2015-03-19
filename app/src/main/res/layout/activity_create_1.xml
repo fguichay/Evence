@@ -2,9 +2,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-
-    android:background="@color/bg_register"
-    >
+    android:background="@color/bg_register">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -64,20 +62,31 @@
 
 
 
-    <FrameLayout android:id="@+id/FrameLayout01"
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="match_parent">
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#d6e3584f"
+            android:textColor="@color/white"
+            android:text="Cancel"/>
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#ea4c88"
+            android:layout_weight="1"
+            android:background="#bd32ba32"
             android:text="Next"
-            android:textColor="@color/white"
-            android:layout_gravity="bottom" />
+            android:textColor="@color/white" />
 
-    </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>
 
