@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:weightSum="1">
 
     <include
         android:id="@+id/tool_bar"
@@ -22,15 +23,18 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
-        android:layout_height="470dp"
-        android:layout_width="match_parent"></android.support.v4.view.ViewPager>
+        android:layout_height="160dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1.03"></android.support.v4.view.ViewPager>
 
     <Button
+        android:id="@+id/myButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:onClick="buttonClick"
         android:text="Create New Event"
-        android:id="@+id/myButton"
+        android:background="#d6e3584f"
+        android:textColor="@color/white"
         android:layout_gravity="bottom" />
 
 

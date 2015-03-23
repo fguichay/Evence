@@ -104,29 +104,28 @@ public class Login extends Activity {
         pDialog.setMessage("Logging in ...");
         showDialog();
 
-        StringRequest strReq = new StringRequest(Method.POST,AppConfig.URL_REGISTER, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Method.POST,
+                AppConfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Login Response: " + response.substring(2065));
+                Log.d(TAG, "Login Response: " + response.toString());
                 hideDialog();
 
                 try {
-
-                    JSONObject jObj = new JSONObject(response.substring(2065));
+                    JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
+
                     // Check for error node in json
                     if (!error) {
                         // user successfully logged in
                         // Create login session
                         session.setLogin(true);
 
-
-                        SQLiteHandler db = new SQLiteHandler(getApplicationContext());
-                        db.addUser(jObj.getJSONObject("user").getString("name"),jObj.getJSONObject("user").getString("email"),jObj.getString("uid"),jObj.getJSONObject("user").getString("created_at"));
-
-
-                        startActivity(new Intent(Login.this, MainEventsActivity.class));
+                        // Launch main activity
+                        Intent intent = new Intent(Login.this,
+                                MainEventsActivity.class);
+                        startActivity(intent);
                         finish();
                     } else {
                         // Error in login. Get the error message

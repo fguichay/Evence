@@ -117,7 +117,7 @@ public class Register extends Activity {
                 hideDialog();
 
                 try {
-                    JSONObject jObj = new JSONObject(response.substring(1980));
+                    JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
                     if (!error) {
                         // User successfully stored in MySQL
