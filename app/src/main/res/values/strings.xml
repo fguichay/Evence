@@ -9,10 +9,21 @@
     <string name="btn_register">REGISTER</string>
     <string name="btn_link_to_register">Not a member? Sign up now.</string>
     <string name="btn_link_to_login">Already registred! Login Me.</string>
-    <string name="welcome">Welcome</string>
     <string name="btn_logout">LOGOUT</string>
+    <string name="welcome">Welcome</string>
     <string name="name">Fullname</string>
     <string name="action_settings">Settings</string>
+
+    <string name="lbl_event_details">Event Details</string>
+    <string name="hint_event_name">Enter an Event Name</string>
+    <string name="btn_date">Set the Date</string>
+    <string name="btn_time">Set the Time</string>
+
+
+    <string name="btn_cancel">CANCEL</string>
+    <string name="btn_next">NEXT</string>
+
+
     <string-array name="array_name">
         <item>1 Mile</item>
         <item>2 Miles</item>

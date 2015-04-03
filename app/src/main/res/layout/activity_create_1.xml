@@ -14,47 +14,53 @@
         android:layout_marginTop="10dp">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/create_event_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Event Details"
+            android:text="@string/lbl_event_details"
             android:textSize="30dp"
             android:singleLine="true"
             android:autoText="false"
             android:textColor="@color/white" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/event_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
             android:padding="10dp"
             android:singleLine="true"
-            android:hint="Name of Event" />
+            android:hint="@string/hint_event_name" />
 
-        <EditText
-            android:id="@+id/editText2"
+
+        <TextView
+            android:id="@+id/lbl_date_time"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
-            android:padding="10dp"
-            android:inputType="date"
-            android:hint="Date of Event" />
+            android:padding="10dp">
 
-        <EditText
-            android:id="@+id/editText3"
+        </TextView>
+        <Button
+            android:id="@+id/btn_date"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/white"
-            android:padding="10dp"
-            android:inputType="time"
-            android:hint="Time of Event" />
+            android:text="@string/btn_date"
+            android:background="@color/btn_login_bg">
+        </Button>
+        <Button
+            android:id="@+id/btn_time"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_time"
+            android:background="@color/btn_login_bg">
+        </Button>
 
         </LinearLayout>
 
@@ -69,21 +75,21 @@
         android:gravity="bottom">
 
         <Button
-            android:id="@+id/btnCancel"
+            android:id="@+id/btn_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#d6e3584f"
             android:textColor="@color/white"
-            android:text="Cancel"/>
+            android:text="@string/btn_cancel"/>
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/btn_next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#bd32ba32"
-            android:text="Next"
+            android:text="@string/btn_next"
             android:textColor="@color/white" />
 
     </LinearLayout>
