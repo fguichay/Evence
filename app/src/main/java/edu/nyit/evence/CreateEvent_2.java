@@ -3,6 +3,7 @@ package edu.nyit.evence;
 /**
  * Created by Frank on 3/17/2015.
  */
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
+
+import java.util.Calendar;
 
 public class CreateEvent_2 extends Activity {
 
@@ -19,15 +23,13 @@ public class CreateEvent_2 extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_2);
+
         addListenerOnButton();
     }
 
     public void addListenerOnButton() {
-
         final Context context = this;
-
         button = (Button) findViewById(R.id.button2);
-
         button.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -39,7 +41,5 @@ public class CreateEvent_2 extends Activity {
             }
 
         });
-
-
     }
 }

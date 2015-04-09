@@ -1,100 +1,154 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayout1"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:fillViewport="true">
 
-
-    android:background="@color/bg_register"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="Event Location"
-            android:textSize="30dp"
-            android:singleLine="true"
-            android:autoText="false"
-            android:textColor="@color/white" />
-
-        <EditText
-            android:id="@+id/editText4"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@color/white"
-            android:inputType="textPostalAddress"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:hint="Address of Event" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Size of Geofence"
-            android:autoText="false"
-            android:textColor="@color/white" />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@color/white"
-            android:drawSelectorOnTop="true"
-            android:entries="@array/array_name"
-            android:spinnerMode="dropdown" />
-
-        <EditText
-            android:id="@+id/editText5"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@color/white"
-            android:padding="10dp"
-            android:inputType="time"
-
-            android:hint="Geofence Start Time" />
-
-
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:gravity="bottom">
+        android:background="@color/bg_register"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-        <Button
-            android:id="@+id/btnPrevious"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#d6e3584f"
-            android:textColor="@color/white"
-            android:text="Previous"/>
+            android:background="@color/bg_register"
+            android:orientation="vertical"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="#bd32ba32"
-            android:text="Next Page"
-            android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:autoText="false"
+                android:padding="25dp"
+                android:singleLine="true"
+                android:text="Event Location"
+                android:textColor="@color/white"
+                android:textSize="30dp" />
+
+            <TextView
+                android:id="@+id/eventAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Event Address"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/event_address"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="15dp"
+                android:background="@color/white"
+                android:hint="enter an address"
+                android:padding="10dp"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Geofence"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_register"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/fenceStartTime"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:focusableInTouchMode="false"
+                    android:hint="fence start time"
+                    android:padding="10dp"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/fenceEndTime"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:focusableInTouchMode="false"
+                    android:hint="fence end time"
+                    android:padding="10dp"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Geofence Radius"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_register"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/white"
+                    android:drawSelectorOnTop="true"
+                    android:entries="@array/array_name"
+                    android:spinnerMode="dropdown" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
-</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnPrevious"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:background="#d6e3584f"
+                android:text="Previous"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:background="#bd32ba32"
+                android:text="Next Page"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>
+

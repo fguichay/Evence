@@ -32,4 +32,11 @@
         <item>5 Miles</item>
     </string-array>
 
+
+
+    <string name="date_button_set">Set Date</string>
+    <string name="date_selected"></string>
+
+    <string name="edit_event_calendar_label">Calendar</string>
+
 </resources>
