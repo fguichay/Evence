@@ -1,82 +1,85 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/bg_register"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:context="com.pavan.dynamiclistview.MainActivity" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoText="false"
+            android:layout_gravity="center_horizontal"
+            android:padding="25dp"
+            android:singleLine="true"
+            android:text="Invite Users"
+            android:textColor="@color/white"
+            android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/emailInvite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E-mail"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/bg_register"
-            android:orientation="vertical"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp">
+            android:orientation="horizontal"
+            android:layout_marginBottom="15dp">
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoText="false"
-                android:layout_gravity="center_horizontal"
-                android:padding="25dp"
-                android:singleLine="true"
-                android:text="Invite Users"
-                android:textColor="@color/white"
-                android:textSize="30dp" />
 
-            <TextView
-                android:id="@+id/emailInvite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="E-mail"
-                android:textColor="@color/white"
-                android:textSize="15dp" />
 
             <EditText
                 android:id="@+id/et"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
                 android:background="@color/white"
                 android:hint="enter an email"
                 android:padding="10dp"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp" />
 
             <Button
-                android:id="@+id/btn"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="add"
                 android:onClick="addbtn"
-                android:textSize="15dp"
-                android:text="Add to Guestlist"
+                android:id="@+id/button"
                 android:background="@color/btn_login_bg"
-                android:layout_marginBottom="15dp" />
+                android:layout_marginLeft="5dp" />
+
+
 
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal">
 
 
         <ListView
             android:id="@+id/lv"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:dividerHeight="2dp"></ListView>
-        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
