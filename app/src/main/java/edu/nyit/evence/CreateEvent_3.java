@@ -47,7 +47,7 @@ public class CreateEvent_3 extends Activity {
 
             public void onClick(View view) {
 
-                Intent intent = new Intent(getApplicationContext(), MainEventsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), CreateEvent_4.class);
                 startActivity(intent);
 
             }

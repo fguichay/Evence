@@ -147,7 +147,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/description"
+                    android:id="@+id/lbl_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView3"
@@ -156,14 +156,14 @@
                     android:textSize="15dp" />
 
                 <EditText
-                    android:id="@+id/fenceStartTrack"
+                    android:id="@+id/description"
                     android:layout_width="fill_parent"
                     android:layout_height="120dp"
-                    android:layout_marginBottom="10dp"
+                    android:gravity="top|left"
                     android:background="@color/white"
                     android:hint="enter a short description of the event"
                     android:inputType="textMultiLine"
-                    android:maxLines="6"
+                    android:maxLength="150"
                     android:scrollHorizontally="false" />
 
             </LinearLayout>

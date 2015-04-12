@@ -1,4 +1,4 @@
-package edu.nyit.evence;
+package edu.nyit.evence.tabs;
 
 /**
  * Created by Frank on 3/11/2015.
@@ -7,6 +7,9 @@ package edu.nyit.evence;
         import android.support.v4.app.Fragment;
         import android.support.v4.app.FragmentManager;
         import android.support.v4.app.FragmentStatePagerAdapter;
+
+        import edu.nyit.evence.Tab1;
+        import edu.nyit.evence.Tab2;
 
 /**
  * Created by hp1 on 21-01-2015.

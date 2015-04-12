@@ -6,7 +6,6 @@ package edu.nyit.evence;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,11 +15,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 
 public class CreateEvent_1 extends Activity {

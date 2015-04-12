@@ -16,6 +16,7 @@ import android.widget.Button;
 import edu.nyit.evence.db.SQLiteHandler;
 import edu.nyit.evence.db.SessionManager;
 import edu.nyit.evence.tabs.SlidingTabLayout;
+import edu.nyit.evence.tabs.ViewPagerAdapter;
 
 
 public class MainEventsActivity extends ActionBarActivity {

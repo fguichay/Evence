@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bg_register"
+    android:configChanges="orientation|screenSize"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/bottom_control_bar"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <RelativeLayout
+            android:id="@+id/top_control_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:text="User Notification"
+                android:textColor="@color/white"
+                android:textSize="25dp" />
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/top_control_bar">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lbl_guestList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select"
+                    android:textColor="@color/white"
+                    android:textSize="15dp" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lbl_guestList"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/radio0"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="Default" />
+
+                    <RadioButton
+                        android:id="@+id/radio1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="false"
+                        android:text="Custom" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/lbl_arriving"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Arriving"
+                    android:textColor="@color/white"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/editText1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:background="@color/white"
+                    android:hint="enter departing message"
+                    android:padding="6dp"
+                    android:singleLine="true"
+                    android:layout_marginBottom="10dp"
+                    android:enabled="false"/>
+
+                <TextView
+                    android:id="@+id/lbl_departing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Departing"
+                    android:textColor="@color/white"/>
+
+                <EditText
+                    android:id="@+id/editText2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:background="@color/white"
+                    android:hint="enter departing message"
+                    android:padding="6dp"
+                    android:singleLine="true"
+                    android:layout_marginBottom="10dp"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_control_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="#d6e3584f"
+            android:text="Previous"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="#bd32ba32"
+            android:text="Create Event"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</RelativeLayout>

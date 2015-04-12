@@ -60,7 +60,7 @@ public class CustomAdapter extends BaseAdapter {
             Model m = modelList.get(position);
             tv.setText(m.getName());
 
-            // click listiner for remove button
+            // click listener for remove button
             rm_btn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
