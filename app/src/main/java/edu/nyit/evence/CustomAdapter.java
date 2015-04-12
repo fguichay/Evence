@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +21,7 @@ public class CustomAdapter extends BaseAdapter {
 
     Context context;
     ArrayList<Model> modelList;
+
 
     public CustomAdapter(Context context, ArrayList<Model> modelList) {
         this.context = context;

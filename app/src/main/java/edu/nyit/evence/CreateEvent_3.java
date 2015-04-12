@@ -6,6 +6,7 @@ package edu.nyit.evence;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
@@ -23,6 +24,11 @@ public class CreateEvent_3 extends Activity {
     EditText et;
     ArrayList<Model> modelList;
     CustomAdapter adapter;
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

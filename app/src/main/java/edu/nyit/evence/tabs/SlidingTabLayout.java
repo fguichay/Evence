@@ -1,11 +1,10 @@
-package edu.nyit.evence;
+package edu.nyit.evence.tabs;
 
 /**
  * Created by Frank on 3/11/2015.
  */
         import android.content.Context;
         import android.graphics.Typeface;
-        import android.os.Build;
         import android.support.v4.view.PagerAdapter;
         import android.support.v4.view.ViewPager;
         import android.util.AttributeSet;
@@ -18,6 +17,10 @@ package edu.nyit.evence;
         import android.widget.HorizontalScrollView;
         import android.widget.LinearLayout;
         import android.widget.TextView;
+
+        import edu.nyit.evence.R;
+        import edu.nyit.evence.tabs.SlidingTabStrip;
+
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
  * the user's scroll progress.

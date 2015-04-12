@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         />
 
-    <edu.nyit.evence.SlidingTabLayout
+    <edu.nyit.evence.tabs.SlidingTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
