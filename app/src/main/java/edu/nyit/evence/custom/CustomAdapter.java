@@ -1,4 +1,4 @@
-package edu.nyit.evence;
+package edu.nyit.evence.custom;
 
 /**
  * Created by Frank on 4/9/2015.
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import edu.nyit.evence.R;
 
 public class CustomAdapter extends BaseAdapter {
 
@@ -73,18 +74,3 @@ public class CustomAdapter extends BaseAdapter {
     }
 }
 
-class Model {
-    String name;
-
-    public Model(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-}

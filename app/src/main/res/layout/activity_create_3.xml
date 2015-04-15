@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -20,7 +21,7 @@
             android:layout_marginBottom="10dp">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/titleCreate3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -31,10 +32,10 @@
                 android:textSize="25dp" />
 
             <TextView
-                android:id="@+id/emailInvite"
+                android:id="@+id/viewEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView2"
+                android:layout_below="@+id/titleCreate3"
                 android:text="E-mail"
                 android:textColor="@color/white"
                 android:textSize="15dp" />
@@ -42,11 +43,11 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/emailInvite"
+                android:layout_below="@+id/viewEmail"
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/et"
+                    android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -58,7 +59,7 @@
                     android:singleLine="true" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/btnAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
@@ -72,7 +73,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/lbl_guestList"
+            android:id="@+id/viewGuestlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/top_control_bar"
@@ -81,10 +82,10 @@
             android:textSize="15dp" />
 
         <ListView
-            android:id="@+id/lv"
+            android:id="@+id/lvGuestlist"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/lbl_guestList" />
+            android:layout_below="@+id/viewGuestlist" />
     </RelativeLayout>
 
     <LinearLayout
@@ -104,7 +105,7 @@
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/btnNext"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_weight="1"

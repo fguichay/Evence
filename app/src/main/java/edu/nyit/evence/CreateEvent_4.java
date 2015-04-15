@@ -8,29 +8,39 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import edu.nyit.evence.db.SessionManager;
+
 /**
  * Created by Frank on 4/12/2015.
  */
 public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChangeListener {
 
-    Button btnFinish;
+    private Button btnPrevious;
+    private Button btnFinish;
     private String op1;
-    private RadioGroup rg1;
-    private EditText edit;
-    private EditText edit2;
+    private RadioGroup radioSelect;
+    private EditText txtArriving;
+    private EditText txtDeparting;
+
+    private SessionManager session;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_4);
 
-        rg1 = (RadioGroup) findViewById(R.id.radioGroup1);
-        rg1.setOnCheckedChangeListener(this);
+        session = new SessionManager(getApplicationContext());
+        if (session.checkLogin()) {
+            finish();
+        }
 
-        edit = (EditText) findViewById(R.id.editText1);
-        edit2 = (EditText) findViewById(R.id.editText2);
+        radioSelect = (RadioGroup) findViewById(R.id.radioSelect);
+        radioSelect.setOnCheckedChangeListener(this);
+
+        txtArriving = (EditText) findViewById(R.id.txtArriving);
+        txtDeparting = (EditText) findViewById(R.id.txtDeparting);
         actv(false);
 
-        btnFinish = (Button) findViewById(R.id.button3);
+        btnFinish = (Button) findViewById(R.id.btnFinish);
         btnFinish.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -47,12 +57,12 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.radio0:
+            case R.id.radioDefault:
                 op1 = "default";
                 actv(false);
                 break;
 
-            case R.id.radio1:
+            case R.id.radioCustom:
                 op1 = "custom";
                 actv(true);
                 break;
@@ -60,11 +70,11 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
     }
 
     private void actv(final boolean active) {
-        edit.setEnabled(active);
-        edit2.setEnabled(active);
+        txtArriving.setEnabled(active);
+        txtDeparting.setEnabled(active);
         if (active) {
-            edit2.requestFocus();
-            edit.requestFocus();
+            txtDeparting.requestFocus();
+            txtArriving.requestFocus();
 
         }
     }

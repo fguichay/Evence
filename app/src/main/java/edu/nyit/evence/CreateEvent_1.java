@@ -9,6 +9,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInstaller;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
@@ -19,9 +20,11 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import edu.nyit.evence.db.SessionManager;
+
 public class CreateEvent_1 extends Activity {
 
-    private Button btnNextPage;
+    private Button btnNext;
     private Button btnCancel;
     private Calendar cal;
     private int day;
@@ -29,20 +32,28 @@ public class CreateEvent_1 extends Activity {
     private int year;
     private int hour;
     private int minute;
-    private EditText startDate;
-    private EditText endDate;
-    private EditText startTime;
-    private EditText endTime;
+    private EditText txtStartDate;
+    private EditText txtEndDate;
+    private EditText txtStartTime;
+    private EditText txtEndTime;
+
+    private SessionManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_1);
 
-        startDate = (EditText) findViewById(R.id.setStartDate);
-        endDate = (EditText) findViewById(R.id.setEndDate);
-        startTime = (EditText) findViewById(R.id.setStartTime);
-        endTime = (EditText) findViewById(R.id.setEndTime);
+        session = new SessionManager(getApplicationContext());
+        if (session.checkLogin()) {
+            finish();
+        }
+
+        txtStartDate = (EditText) findViewById(R.id.txtStartDate);
+        txtEndDate = (EditText) findViewById(R.id.txtEndDate);
+        txtStartTime = (EditText) findViewById(R.id.txtStartTime);
+        txtEndTime = (EditText) findViewById(R.id.txtEndTime);
+
         cal = Calendar.getInstance();
         day = cal.get(Calendar.DAY_OF_MONTH);
         month = cal.get(Calendar.MONTH);
@@ -50,28 +61,28 @@ public class CreateEvent_1 extends Activity {
         hour = cal.get(Calendar.HOUR_OF_DAY);
         minute = cal.get(Calendar.MINUTE);
 
-        startDate.setOnClickListener(new OnClickListener() {
+        txtStartDate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDateDialog();
             }
         });
 
-        endDate.setOnClickListener(new OnClickListener() {
+        txtEndDate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 endDateDialog();
             }
         });
 
-        startTime.setOnClickListener(new OnClickListener() {
+        txtStartTime.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startTimeDialog();
             }
         });
 
-        endTime.setOnClickListener(new OnClickListener() {
+        txtEndTime.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 endTimeDialog();
@@ -86,7 +97,7 @@ public class CreateEvent_1 extends Activity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 monthOfYear = monthOfYear + 1;
-                startDate.setText(monthOfYear + "/" + dayOfMonth + "/" + year);
+                txtStartDate.setText(monthOfYear + "/" + dayOfMonth + "/" + year);
             }
         };
 
@@ -99,7 +110,7 @@ public class CreateEvent_1 extends Activity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 monthOfYear = monthOfYear + 1;
-                endDate.setText(monthOfYear + "/" + dayOfMonth + "/" + year);
+                txtEndDate.setText(monthOfYear + "/" + dayOfMonth + "/" + year);
             }
         };
 
@@ -129,7 +140,7 @@ public class CreateEvent_1 extends Activity {
                     zone = "AM";
                 }
 
-                startTime.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)).append(" ").append(zone));
+                txtStartTime.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)).append(" ").append(zone));
             }
         };
 
@@ -152,7 +163,7 @@ public class CreateEvent_1 extends Activity {
                     zone = "AM";
                 }
 
-                endTime.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)).append(" ").append(zone));
+                txtEndTime.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)).append(" ").append(zone));
             }
         };
 
@@ -163,8 +174,8 @@ public class CreateEvent_1 extends Activity {
     public void addListenerOnButton() {
 
         final Context context = this;
-        btnNextPage = (Button) findViewById(R.id.btn_next);
-        btnNextPage.setOnClickListener(new OnClickListener() {
+        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 Intent intent = new Intent(context, CreateEvent_2.class);
@@ -172,7 +183,7 @@ public class CreateEvent_1 extends Activity {
             }
         });
 
-        btnCancel = (Button) findViewById(R.id.btn_cancel);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

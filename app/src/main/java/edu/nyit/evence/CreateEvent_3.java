@@ -4,26 +4,30 @@ package edu.nyit.evence;
  * Created by Frank on 3/17/2015.
  */
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
+
+import edu.nyit.evence.custom.CustomAdapter;
+import edu.nyit.evence.custom.Model;
+import edu.nyit.evence.db.SessionManager;
 
 public class CreateEvent_3 extends Activity {
 
-    Button btnFinish;
-    ListView lv;
-    EditText et;
-    ArrayList<Model> modelList;
-    CustomAdapter adapter;
+    private Button btnPrevious;
+    private Button btnNext;
+    private ListView lvGuestlist;
+    private EditText txtEmail;
+    private ArrayList<Model> myGuestlist;
+    private CustomAdapter adapter;
+
+    private SessionManager session;
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -35,15 +39,20 @@ public class CreateEvent_3 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_3);
 
-        lv = (ListView) findViewById(R.id.lv);
-        et = (EditText) findViewById(R.id.et);
+        session = new SessionManager(getApplicationContext());
+        if (session.checkLogin()) {
+            finish();
+        }
 
-        modelList = new ArrayList<Model>();
-        adapter = new CustomAdapter(getApplicationContext(), modelList);
-        lv.setAdapter(adapter);
+        lvGuestlist = (ListView) findViewById(R.id.lvGuestlist);
+        txtEmail = (EditText) findViewById(R.id.txtEmail);
 
-        btnFinish = (Button) findViewById(R.id.button3);
-        btnFinish.setOnClickListener(new View.OnClickListener() {
+        myGuestlist = new ArrayList<Model>();
+        adapter = new CustomAdapter(getApplicationContext(), myGuestlist);
+        lvGuestlist.setAdapter(adapter);
+
+        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
 
@@ -51,26 +60,20 @@ public class CreateEvent_3 extends Activity {
                 startActivity(intent);
 
             }
-
         });
-
-
     }
 
     public void addbtn(View v) {
-        String name = et.getText().toString();
+        String name = txtEmail.getText().toString();
 
         if (name.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Plz enter Values",
                     Toast.LENGTH_SHORT).show();
         } else {
             Model md = new Model(name);
-            modelList.add(md);
+            myGuestlist.add(md);
             adapter.notifyDataSetChanged();
-            et.setText("");
+            txtEmail.setText("");
         }
-
     }
-
-
 }

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -20,7 +21,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/titleCreate2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -43,7 +44,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/eventAddress"
+                    android:id="@+id/viewAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/top_control_bar"
@@ -58,7 +59,7 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/event_address"
+                        android:id="@+id/txtAddress"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -70,7 +71,7 @@
                         android:singleLine="true" />
 
                     <Button
-                        android:id="@+id/locate"
+                        android:id="@+id/btnLocate"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
@@ -83,7 +84,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/lblMaps"
+                    android:id="@+id/viewMap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/address"
@@ -95,13 +96,13 @@
                     android:id="@+id/textView3"
                     android:layout_width="fill_parent"
                     android:layout_height="300dp"
-                    android:layout_below="@+id/lblMaps"
+                    android:layout_below="@+id/titleMap"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="10dp"
                     android:text="GOOGLEMAPS MAP" />
 
                 <TextView
-                    android:id="@+id/lbl_geofenceRadius"
+                    android:id="@+id/viewGeoRadius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/geofenceStart"
@@ -110,13 +111,14 @@
                     android:textSize="15dp" />
 
                 <SeekBar
-                    android:id="@+id/seekBar1"
+                    android:id="@+id/barRadius"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:max="10" />
+                    android:max="10"
+                    android:indeterminate="false" />
 
                 <TextView
-                    android:id="@+id/textView1"
+                    android:id="@+id/viewRadius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -125,7 +127,7 @@
 
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/viewFenceStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView3"
@@ -134,7 +136,7 @@
                     android:textSize="15dp" />
 
                 <EditText
-                    android:id="@+id/fenceStartTrack"
+                    android:id="@+id/txtFenceStart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -145,7 +147,7 @@
                     android:singleLine="true" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/viewFenceEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Geofence End"
@@ -153,7 +155,7 @@
                     android:textSize="15dp" />
 
                 <EditText
-                    android:id="@+id/fenceEndTrack"
+                    android:id="@+id/txtFenceEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -184,7 +186,7 @@
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnNext"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_weight="1"

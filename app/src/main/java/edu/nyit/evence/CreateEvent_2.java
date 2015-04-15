@@ -18,28 +18,40 @@ import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import edu.nyit.evence.db.SessionManager;
+
 public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChangeListener {
 
-    private Button button;
-    private EditText fenceStart;
-    private EditText fenceEnd;
-    private SeekBar seekBar;
-    private TextView textView;
+    private Button btnPrevious;
+    private Button btnNext;
+    private Button btnLocate;
+    private EditText txtAddress;
+    private EditText txtFenceStart;
+    private EditText txtFenceEnd;
+    private SeekBar barRadius;
+    private TextView viewRadius;
     static Dialog d;
+
+    private SessionManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_2);
 
-        fenceStart = (EditText) findViewById(R.id.fenceStartTrack);
-        fenceEnd = (EditText) findViewById(R.id.fenceEndTrack);
-        seekBar = (SeekBar) findViewById(R.id.seekBar1);
-        textView = (TextView) findViewById(R.id.textView1);
+        session = new SessionManager(getApplicationContext());
+        if (session.checkLogin()) {
+            finish();
+        }
+
+        txtFenceStart = (EditText) findViewById(R.id.txtFenceStart);
+        txtFenceEnd = (EditText) findViewById(R.id.txtFenceEnd);
+        barRadius = (SeekBar) findViewById(R.id.barRadius);
+        viewRadius = (TextView) findViewById(R.id.viewRadius);
 
         //initalize radius seekbar
-        textView.setText("Radius: " + seekBar.getProgress() + " Miles");
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        viewRadius.setText("Radius: " + barRadius.getProgress() + " Miles");
+        barRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
 
             @Override
@@ -53,12 +65,12 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                textView.setText("Radius: " + progress + " Miles");
+                viewRadius.setText("Radius: " + progress + " Miles");
             }
         });
 
         //initialize dialog for fence start time
-        fenceStart.setOnClickListener(new OnClickListener() {
+        txtFenceStart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startShow();
@@ -66,7 +78,7 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         });
 
         //initialize dialog for fence end time
-        fenceEnd.setOnClickListener(new OnClickListener() {
+        txtFenceEnd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 endShow();
@@ -114,9 +126,9 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
             @Override
             public void onClick(View v) {
                 if (hour.getValue() == 0) {
-                    fenceStart.setText("Start " + String.valueOf(minute.getValue()) + " Minutes before event");
+                    txtFenceStart.setText("Start " + String.valueOf(minute.getValue()) + " Minutes before event");
                 } else {
-                    fenceStart.setText("Start " + String.valueOf(hour.getValue()) + ":" + String.valueOf(minute.getValue()) + " Hour(s) before event"); //set the value to textview
+                    txtFenceStart.setText("Start " + String.valueOf(hour.getValue()) + ":" + String.valueOf(minute.getValue()) + " Hour(s) before event"); //set the value to textview
                 }
                 d.dismiss();
             }
@@ -168,9 +180,9 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
             @Override
             public void onClick(View v) {
                 if (hour.getValue() == 0) {
-                    fenceEnd.setText("End " + String.valueOf(minute.getValue()) + " Minutes after event");
+                    txtFenceEnd.setText("End " + String.valueOf(minute.getValue()) + " Minutes after event");
                 } else {
-                    fenceEnd.setText("End " + String.valueOf(hour.getValue()) + ":" + String.valueOf(minute.getValue()) + " Hour(s) after event"); //set the value to textview
+                    txtFenceEnd.setText("End " + String.valueOf(hour.getValue()) + ":" + String.valueOf(minute.getValue()) + " Hour(s) after event"); //set the value to textview
                 }
                 d.dismiss();
             }
@@ -192,8 +204,8 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
 
     public void addListenerOnButton() {
         final Context context = this;
-        button = (Button) findViewById(R.id.button2);
-        button.setOnClickListener(new OnClickListener() {
+        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {

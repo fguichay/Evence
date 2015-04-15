@@ -12,6 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.HashMap;
 
 import edu.nyit.evence.db.SQLiteHandler;
 import edu.nyit.evence.db.SessionManager;
@@ -22,7 +25,7 @@ import edu.nyit.evence.tabs.ViewPagerAdapter;
 public class MainEventsActivity extends ActionBarActivity {
 
     // Declaring Your View and Variables
-
+    Button btnCreateEvent;
     Toolbar toolbar;
     ViewPager pager;
     ViewPagerAdapter adapter;
@@ -48,10 +51,27 @@ public class MainEventsActivity extends ActionBarActivity {
 
         // session manager
         session = new SessionManager(getApplicationContext());
-
-        if (!session.isLoggedIn()) {
-            logoutUser();
+        if (session.checkLogin()) {
+            finish();
         }
+
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+
+
+
+
+
+        // Fetching user details from sqlite
+        //HashMap<String, String> user = db.getUserDetails();
+
+        //String name = user.get("name");
+        //String email = user.get("email");
+
+        // Displaying the user details on the screen
+        //Toast.makeText(getApplicationContext(), "em_id: " + email + "+" + name ,Toast.LENGTH_LONG).show();
+
+        //txtName.setText(name);
+        //txtEmail.setText(email);
 
 
 
@@ -90,19 +110,18 @@ public class MainEventsActivity extends ActionBarActivity {
             }
         };
 
-        Button btn = (Button) findViewById(R.id.myButton);
-        btn.setOnClickListener(listnr);
+        btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);
+        btnCreateEvent.setOnClickListener(listnr);
 
     }
 
     private void logoutUser() {
-        session.setLogin(false);
-
+        session.logoutUser();
         db.deleteUsers();
 
         // Launching the login activity
-        Intent intent = new Intent(MainEventsActivity.this, Login.class);
-        startActivity(intent);
+        //Intent intent = new Intent(MainEventsActivity.this, Login.class);
+        //startActivity(intent);
         finish();
     }
 
