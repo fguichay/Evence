@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_register"
     android:configChanges="orientation|screenSize"
     android:fillViewport="true"
     android:orientation="vertical">
@@ -11,14 +10,13 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/bottom_control_bar"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:layout_above="@+id/bottom_control_bar">
 
         <RelativeLayout
             android:id="@+id/top_control_bar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#DC5563">
 
             <TextView
                 android:id="@+id/titleCreate1"
@@ -36,7 +34,9 @@
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/top_control_bar">
+            android:layout_below="@+id/top_control_bar"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -49,8 +49,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/top_control_bar"
                     android:text="Name"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold" />
 
 
                 <EditText
@@ -59,10 +61,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/white"
+                    android:background="@drawable/rounded_edittext"
                     android:hint="@string/hint_event_name"
-                    android:padding="6dp"
-                    android:singleLine="true" />
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/input_hint" />
 
 
                 <TextView
@@ -71,14 +74,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/address"
                     android:text="Starting"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bg_register"
                     android:orientation="horizontal">
 
                     <EditText
@@ -87,11 +90,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_edittext"
                         android:focusableInTouchMode="false"
                         android:hint="set date"
-                        android:padding="6dp"
-                        android:singleLine="true" />
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/input_hint" />
 
                     <EditText
                         android:id="@+id/txtStartTime"
@@ -99,11 +103,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_edittext"
                         android:focusableInTouchMode="false"
                         android:hint="set start time"
-                        android:padding="6dp"
-                        android:singleLine="true" />
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/input_hint" />
                 </LinearLayout>
 
                 <TextView
@@ -111,14 +116,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ending"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/bg_register"
                     android:orientation="horizontal">
 
                     <EditText
@@ -127,11 +132,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_edittext"
                         android:focusableInTouchMode="false"
                         android:hint="set date"
-                        android:padding="6dp"
-                        android:singleLine="true" />
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/input_hint" />
 
                     <EditText
                         android:id="@+id/txtEndTime"
@@ -139,11 +145,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_edittext"
                         android:focusableInTouchMode="false"
                         android:hint="set end time"
-                        android:padding="6dp"
-                        android:singleLine="true" />
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/input_hint" />
                 </LinearLayout>
 
                 <TextView
@@ -152,19 +159,22 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView3"
                     android:text="Description"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtDesc"
                     android:layout_width="fill_parent"
                     android:layout_height="120dp"
-                    android:background="@color/white"
+                    android:background="@drawable/rounded_edittext"
                     android:gravity="top|left"
                     android:hint="enter a short description of the event"
                     android:inputType="textMultiLine"
                     android:maxLength="150"
-                    android:scrollHorizontally="false" />
+                    android:scrollHorizontally="false"
+                    android:padding="5dp"
+                    android:textColorHint="@color/input_hint" />
 
             </LinearLayout>
         </ScrollView>
@@ -182,7 +192,7 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="#d6e3584f"
+            android:background="#D14747"
             android:text="Cancel"
             android:textColor="@color/white" />
 
@@ -191,7 +201,7 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="#bd32ba32"
+            android:background="#2eb8b8"
             android:text="Next Page"
             android:textColor="@color/white" />
     </LinearLayout>

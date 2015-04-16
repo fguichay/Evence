@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_register"
     android:configChanges="orientation|screenSize"
     android:fillViewport="true"
     android:orientation="vertical">
@@ -10,14 +9,13 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/bottom_control_bar"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:layout_above="@+id/bottom_control_bar">
 
         <RelativeLayout
             android:id="@+id/top_control_bar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#DC5563">
 
             <TextView
                 android:id="@+id/titleCreate4"
@@ -35,7 +33,9 @@
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/top_control_bar">
+            android:layout_below="@+id/top_control_bar"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -47,8 +47,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Select"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp" />
 
                 <RadioGroup
                     android:id="@+id/radioSelect"
@@ -65,7 +67,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:checked="false"
-                        android:text="Default" />
+                        android:text="Default"
+                        android:textColor="#314159" />
 
                     <RadioButton
                         android:id="@+id/radioCustom"
@@ -73,7 +76,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:checked="false"
-                        android:text="Custom" />
+                        android:text="Custom"
+                        android:textColor="#314159" />
                 </RadioGroup>
 
                 <TextView
@@ -81,38 +85,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Arriving"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtArriving"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/white"
+                    android:background="@drawable/rounded_edittext"
                     android:enabled="false"
                     android:hint="enter arriving message"
                     android:inputType="textCapSentences"
-                    android:padding="6dp"
-                    android:singleLine="true" />
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/input_hint" />
 
                 <TextView
                     android:id="@+id/viewDeparting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Departing"
-                    android:textColor="@color/white" />
+                    android:textColor="#314159"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtDeparting"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/white"
+                    android:background="@drawable/rounded_edittext"
                     android:hint="enter departing message"
                     android:inputType="textCapSentences"
-                    android:padding="6dp"
-                    android:singleLine="true" />
+                    android:padding="5dp"
+                    android:singleLine="true"
+                    android:textColorHint="@color/input_hint" />
 
             </LinearLayout>
         </ScrollView>
@@ -130,7 +138,7 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="#d6e3584f"
+            android:background="#D14747"
             android:text="Previous"
             android:textColor="@color/white" />
 

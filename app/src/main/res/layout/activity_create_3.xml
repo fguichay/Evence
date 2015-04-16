@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_register"
     android:configChanges="orientation|screenSize"
     android:fillViewport="true"
     android:orientation="vertical">
@@ -10,15 +9,14 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/bottom_control_bar"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:layout_above="@+id/bottom_control_bar">
 
         <RelativeLayout
             android:id="@+id/top_control_bar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:background="#DC5563">
 
             <TextView
                 android:id="@+id/titleCreate3"
@@ -30,62 +28,81 @@
                 android:text="Invite Guests"
                 android:textColor="@color/white"
                 android:textSize="25dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/top_control_bar"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <TextView
                 android:id="@+id/viewEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/titleCreate3"
+                android:layout_alignParentTop="false"
                 android:text="E-mail"
-                android:textColor="@color/white"
-                android:textSize="15dp" />
+                android:textColor="#314159"
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/address_bar"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/viewEmail"
-                android:orientation="horizontal">
+                android:layout_marginBottom="10dp">
 
-                <EditText
-                    android:id="@+id/txtEmail"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"
-                    android:background="@color/white"
-                    android:hint="enter an email"
-                    android:padding="6dp"
-                    android:singleLine="true" />
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnAdd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="5dp"
-                    android:background="@color/btn_login_bg"
-                    android:onClick="addbtn"
-                    android:text="Add"
-                    android:textAllCaps="false" />
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/txtEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_edittext"
+                        android:hint="enter an email"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/input_hint" />
 
+                    <Button
+                        android:id="@+id/btnAdd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:background="#A4A4A4"
+                        android:onClick="addbtn"
+                        android:text="Add"
+                        android:textAllCaps="false" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/viewGuestlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/address_bar"
+                android:text="Guestlist"
+                android:textColor="#314159"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <ListView
+                android:id="@+id/lvGuestlist"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/viewGuestlist" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/viewGuestlist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/top_control_bar"
-            android:text="Guestlist"
-            android:textColor="@color/white"
-            android:textSize="15dp" />
-
-        <ListView
-            android:id="@+id/lvGuestlist"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/viewGuestlist" />
     </RelativeLayout>
 
     <LinearLayout
@@ -100,7 +117,7 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="#d6e3584f"
+            android:background="#D14747"
             android:text="Previous"
             android:textColor="@color/white" />
 
@@ -109,7 +126,7 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="#bd32ba32"
+            android:background="#2eb8b8"
             android:text="Next"
             android:textColor="@color/white" />
     </LinearLayout>

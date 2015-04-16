@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_register"
     android:configChanges="orientation|screenSize"
     android:fillViewport="true"
     android:orientation="vertical">
@@ -11,14 +10,13 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/bottom_control_bar"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:layout_above="@+id/bottom_control_bar">
 
         <RelativeLayout
             android:id="@+id/top_control_bar"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#DC5563">
 
             <TextView
                 android:id="@+id/titleCreate2"
@@ -36,7 +34,9 @@
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@+id/top_control_bar">
+            android:layout_below="@+id/top_control_bar"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -49,8 +49,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/top_control_bar"
                     android:text="Event Address"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -65,10 +67,11 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
+                        android:background="@drawable/rounded_edittext"
                         android:hint="enter an address"
-                        android:padding="6dp"
-                        android:singleLine="true" />
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/input_hint" />
 
                     <Button
                         android:id="@+id/btnLocate"
@@ -76,10 +79,10 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="5dp"
-                        android:background="@color/btn_login_bg"
                         android:onClick="mapsLocate"
                         android:text="Locate"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:background="#A4A4A4" />
 
                 </LinearLayout>
 
@@ -89,8 +92,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/address"
                     android:text="Map"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -107,8 +111,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/geofenceStart"
                     android:text="Geofence Radius"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <SeekBar
                     android:id="@+id/barRadius"
@@ -123,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="10dp"
-                    android:textColor="@color/white" />
+                    android:textColor="#314159" />
 
 
                 <TextView
@@ -132,18 +137,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView3"
                     android:text="Geofence Start"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtFenceStart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/white"
+                    android:background="@drawable/rounded_edittext"
                     android:focusableInTouchMode="false"
                     android:hint="select time before the event"
-                    android:padding="6dp"
+                    android:padding="5dp"
                     android:singleLine="true" />
 
                 <TextView
@@ -151,18 +157,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Geofence End"
-                    android:textColor="@color/white"
-                    android:textSize="15dp" />
+                    android:textColor="#314159"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtFenceEnd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:background="@color/white"
+                    android:background="@drawable/rounded_edittext"
                     android:focusableInTouchMode="false"
                     android:hint="select time after the event"
-                    android:padding="6dp"
+                    android:padding="5dp"
                     android:singleLine="true" />
 
             </LinearLayout>
@@ -181,7 +188,7 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="#d6e3584f"
+            android:background="#D14747"
             android:text="Previous"
             android:textColor="@color/white" />
 
@@ -190,7 +197,7 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="#bd32ba32"
+            android:background="#2eb8b8"
             android:text="Next Page"
             android:textColor="@color/white" />
     </LinearLayout>

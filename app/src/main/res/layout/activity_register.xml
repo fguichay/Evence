@@ -20,39 +20,39 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/input_register_bg"
+            android:background="@drawable/login_rounded"
             android:hint="@string/hint_name"
             android:inputType="textCapWords"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/input_register"
-            android:textColorHint="@color/input_register_hint" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/input_hint" />
 
         <EditText
             android:id="@+id/txtEmail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/input_register_bg"
+            android:background="@drawable/login_rounded"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/input_register"
-            android:textColorHint="@color/input_register_hint" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/input_hint" />
 
         <EditText
             android:id="@+id/txtPassword"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/input_register_bg"
+            android:background="@drawable/login_rounded"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/input_register"
-            android:textColorHint="@color/input_register_hint" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/input_hint" />
 
         <!-- Login Button -->
 
@@ -61,7 +61,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="#ea4c88"
+            android:background="@color/btn_registration_bg"
             android:text="@string/btn_register"
             android:textColor="@color/white" />
 

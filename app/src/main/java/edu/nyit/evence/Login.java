@@ -106,7 +106,7 @@ public class Login extends Activity {
         pDialog.setMessage("Logging in ...");
         showDialog();
 
-        StringRequest strReq = new StringRequest(Method.POST, AppConfig.URL_LOGIN, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Method.POST, AppConfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -179,5 +179,23 @@ public class Login extends Activity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
+    }
+
+    @Override
+
+    public void onBackPressed() {
+
+        Log.d("CDA", "onBackPressed Called");
+
+        Intent i = new Intent(Intent.ACTION_MAIN);
+
+        i.addCategory(Intent.CATEGORY_HOME);
+
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(i);
+
+        finish();
+
     }
 }

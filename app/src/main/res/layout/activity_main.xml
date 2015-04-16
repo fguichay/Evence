@@ -31,7 +31,7 @@
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_gravity="bottom"
-        android:background="#d6e3584f"
+        android:background="#DC5563"
         android:text="Create New Event"
         android:textColor="@color/white" />
 

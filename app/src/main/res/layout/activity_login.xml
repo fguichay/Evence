@@ -21,28 +21,26 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/white"
+            android:background="@drawable/login_rounded"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/input_login"
-            android:textColorHint="@color/input_login_hint" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/input_hint" />
 
         <EditText
             android:id="@+id/txtPassword"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@color/white"
+            android:background="@drawable/login_rounded"
             android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/input_login"
-            android:textColorHint="@color/input_login_hint" />
-
-        <!-- Login Button -->
+            android:textColor="@color/white"
+            android:textColorHint="@color/input_hint" />
 
         <Button
             android:id="@+id/btnLogin"
@@ -51,9 +49,7 @@
             android:layout_marginTop="20dip"
             android:background="@color/btn_login_bg"
             android:text="@string/btn_login"
-            android:textColor="@color/btn_login" />
-
-        <!-- Link to Login Screen -->
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnLinkToRegisterScreen"
