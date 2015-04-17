@@ -14,12 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.util.HashMap;
-
 import edu.nyit.evence.db.SQLiteHandler;
 import edu.nyit.evence.db.SessionManager;
 import edu.nyit.evence.tabs.SlidingTabLayout;
-import edu.nyit.evence.tabs.ViewPagerAdapter;
 
 
 public class MainEventsActivity extends ActionBarActivity {

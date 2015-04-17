@@ -1,4 +1,4 @@
-package edu.nyit.evence.tabs;
+package edu.nyit.evence;
 
 /**
  * Created by Frank on 3/11/2015.
