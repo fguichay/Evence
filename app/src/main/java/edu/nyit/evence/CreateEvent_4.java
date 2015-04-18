@@ -1,19 +1,42 @@
 package edu.nyit.evence;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import edu.nyit.evence.app.AppConfig;
+import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SessionManager;
+
+import static com.android.volley.Request.Method.*;
 
 /**
  * Created by Frank on 4/12/2015.
  */
 public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChangeListener {
+
 
     private Button btnPrevious;
     private Button btnFinish;
@@ -21,8 +44,12 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
     private RadioGroup radioSelect;
     private EditText txtArriving;
     private EditText txtDeparting;
+    private ProgressDialog pDialog;
+
 
     private SessionManager session;
+
+    // get user data from session
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +67,13 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         txtDeparting = (EditText) findViewById(R.id.txtDeparting);
         actv(false);
 
-        btnFinish = (Button) findViewById(R.id.btnFinish);
-        btnFinish.setOnClickListener(new View.OnClickListener() {
 
-            public void onClick(View view) {
+        btnFinish = (Button) findViewById(R.id.btnFinish);
+
+
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View view) {
+
 
                 Intent intent = new Intent(getApplicationContext(), MainEventsActivity.class);
                 startActivity(intent);
@@ -53,6 +83,8 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         });
 
     }
+
+
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {

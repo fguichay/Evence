@@ -3,17 +3,34 @@ package edu.nyit.evence;
 /**
  * Created by Frank on 3/1/2015.
  */
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import edu.nyit.evence.app.AppConfig;
+import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SQLiteHandler;
 import edu.nyit.evence.db.SessionManager;
 import edu.nyit.evence.tabs.SlidingTabLayout;
@@ -23,6 +40,7 @@ import edu.nyit.evence.tabs.ViewPagerAdapter;
 public class MainEventsActivity extends ActionBarActivity {
 
     // Declaring Your View and Variables
+    private static final String TAG = Register.class.getSimpleName();
     Button btnCreateEvent;
     Toolbar toolbar;
     ViewPager pager;
@@ -30,6 +48,7 @@ public class MainEventsActivity extends ActionBarActivity {
     SlidingTabLayout tabs;
     CharSequence Titles[]={"Hosting","Invites"};
     int Numboftabs =2;
+    private ProgressDialog pDialog;
 
 
     //XXXXX
@@ -56,7 +75,8 @@ public class MainEventsActivity extends ActionBarActivity {
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
 
 
-
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
 
 
         // Fetching user details from sqlite
@@ -100,18 +120,97 @@ public class MainEventsActivity extends ActionBarActivity {
         // Setting the ViewPager For the SlidingTabsLayout
         tabs.setViewPager(pager);
 
-        View.OnClickListener listnr = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);
+        btnCreateEvent.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                getEventID();
+
                 Intent intent = new Intent(getApplicationContext(), CreateEvent_1.class);
                 startActivity(intent);
-            }
-        };
 
-        btnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);
-        btnCreateEvent.setOnClickListener(listnr);
+            }
+
+        });
 
     }
+
+
+    private void getEventID() {
+
+        SharedPreferences mypref = getSharedPreferences("EvencePref", MODE_PRIVATE);
+        final String uid = (mypref.getString("KEY_USER_ID", null));
+        //final int uid = Integer.parseInt(keyId);
+        // Tag used to cancel the request
+        String  tag_json_obj = "req_event";
+
+        pDialog.setMessage("Loading...");
+        showpDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, new Response.Listener<String>() {
+
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+
+                try {
+
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    int id = jObj.getInt("event_id");
+                    String eventID = Integer.toString(id);
+                    Toast.makeText(getApplicationContext(), "event id: " + eventID ,Toast.LENGTH_LONG).show();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
+
+                hidepDialog();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                hidepDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "startCreate");
+                params.put("uid", uid);
+
+                return params;
+            }
+
+        };
+// Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
+
+
+    }
+
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
+
+
 
     private void logoutUser() {
         session.logoutUser();

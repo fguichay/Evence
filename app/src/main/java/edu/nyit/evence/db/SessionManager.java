@@ -65,6 +65,20 @@ public class SessionManager {
         Log.d(TAG, "User login session modified!");
     }
 
+    /**
+     * Get stored session data
+     * */
+    public HashMap <String, String> getUserDetails() {
+        //Use hashmap to store user credentials
+        HashMap <String, String> user = new HashMap<String, String>();
+        //user name
+        user.put(KEY_USER_ID, pref.getString(KEY_USER_ID, null));
+        //user email
+        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+
+        return user;
+    }
+
 
     /**
      * Check login method will check user login status
@@ -90,19 +104,7 @@ public class SessionManager {
         return false;
     }
 
-    /**
-     * Get stored session data
-     * */
-    public HashMap <String, String> getUserDetails() {
-        //Use hashmap to store user credentials
-        HashMap <String, String> user = new HashMap<String, String>();
-        //user name
-        user.put(KEY_USER_ID, pref.getString(KEY_USER_ID, null));
-        //user email
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
 
-        return user;
-    }
 
     /**
      * Clear session details
