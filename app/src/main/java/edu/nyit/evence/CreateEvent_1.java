@@ -44,10 +44,9 @@ public class CreateEvent_1 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_1);
 
+        // session manager
         session = new SessionManager(getApplicationContext());
-        if (session.checkLogin()) {
-            finish();
-        }
+        session.checkLogin();
 
         txtStartDate = (EditText) findViewById(R.id.txtStartDate);
         txtEndDate = (EditText) findViewById(R.id.txtEndDate);

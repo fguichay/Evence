@@ -39,10 +39,9 @@ public class CreateEvent_3 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_3);
 
+        // session manager
         session = new SessionManager(getApplicationContext());
-        if (session.checkLogin()) {
-            finish();
-        }
+        session.checkLogin();
 
         lvGuestlist = (ListView) findViewById(R.id.lvGuestlist);
         txtEmail = (EditText) findViewById(R.id.txtEmail);

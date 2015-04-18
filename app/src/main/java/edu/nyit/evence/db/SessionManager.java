@@ -33,13 +33,16 @@ public class SessionManager {
     private static final String PREF_NAME = "EvencePref";
 
     // all shared preferences keys
-    private static final String KEY_IS_LOGGEDIN = "IsLoggedIn";
+    private static final String IS_LOGGEDIN = "IsLoggedIn";
 
     // User name (make variable public to access from outside)
     public static final String KEY_USER_ID = "id";
 
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
+
+    // event ID
+    public static final String EVENT_ID = "id";
 
     // constructor
     public SessionManager(Context context) {
@@ -48,10 +51,15 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void createLoginSession(boolean isLoggedIn, String email, String id) {
+    public void createEvent(String id){
+        editor.putString(EVENT_ID, id); // Storing string
+        editor.commit(); //
+    }
+
+    public void createLoginSession(String email, String id) {
 
         //storing boolean login value
-        editor.putBoolean(KEY_IS_LOGGEDIN, isLoggedIn);
+        editor.putBoolean(IS_LOGGEDIN, true);
 
         // Storing email in pref
         editor.putString(KEY_EMAIL, email);
@@ -75,6 +83,8 @@ public class SessionManager {
         user.put(KEY_USER_ID, pref.getString(KEY_USER_ID, null));
         //user email
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        //event id
+        user.put(EVENT_ID, pref.getString(EVENT_ID, null));
 
         return user;
     }
@@ -85,7 +95,7 @@ public class SessionManager {
      * If false it will redirect user to login page
      * Else do anything
      * */
-    public boolean checkLogin(){
+    public void checkLogin(){
         // Check login status
         if(!this.isLoggedIn()){
             // user is not logged in redirect him to Login Activity
@@ -99,9 +109,7 @@ public class SessionManager {
             // Staring Login Activity
             _context.startActivity(i);
 
-            return true;
         }
-        return false;
     }
 
 
@@ -129,7 +137,7 @@ public class SessionManager {
     // Check for login
     public boolean isLoggedIn(){
 
-        return pref.getBoolean(KEY_IS_LOGGEDIN, false);
+        return pref.getBoolean(IS_LOGGEDIN, false);
     }
 
 }

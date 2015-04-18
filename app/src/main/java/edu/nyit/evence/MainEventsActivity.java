@@ -3,6 +3,7 @@ package edu.nyit.evence;
 /**
  * Created by Frank on 3/1/2015.
  */
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,7 +54,7 @@ public class MainEventsActivity extends ActionBarActivity {
 
     //XXXXX
     private SQLiteHandler db;
-    private SessionManager session;
+    SessionManager session;
 
 
     @Override
@@ -68,11 +69,16 @@ public class MainEventsActivity extends ActionBarActivity {
 
         // session manager
         session = new SessionManager(getApplicationContext());
-        if (session.checkLogin()) {
-            finish();
-        }
+        session.checkLogin();
+
+        HashMap<String, String> user = session.getUserDetails();
+        // name
+        final String userID = user.get(SessionManager.KEY_USER_ID);
 
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+
+
+
 
 
         pDialog = new ProgressDialog(this);
@@ -124,7 +130,7 @@ public class MainEventsActivity extends ActionBarActivity {
         btnCreateEvent.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-                getEventID();
+                getEventID(userID);
 
                 Intent intent = new Intent(getApplicationContext(), CreateEvent_1.class);
                 startActivity(intent);
@@ -136,11 +142,10 @@ public class MainEventsActivity extends ActionBarActivity {
     }
 
 
-    private void getEventID() {
+    private void getEventID(String userID) {
 
-        SharedPreferences mypref = getSharedPreferences("EvencePref", MODE_PRIVATE);
-        final String uid = (mypref.getString("KEY_USER_ID", null));
-        //final int uid = Integer.parseInt(keyId);
+
+        final String uid = userID;
         // Tag used to cancel the request
         String  tag_json_obj = "req_event";
 
@@ -162,6 +167,7 @@ public class MainEventsActivity extends ActionBarActivity {
                     int id = jObj.getInt("event_id");
                     String eventID = Integer.toString(id);
                     Toast.makeText(getApplicationContext(), "event id: " + eventID ,Toast.LENGTH_LONG).show();
+                    session.createEvent(eventID);
 
 
                 } catch (JSONException e) {

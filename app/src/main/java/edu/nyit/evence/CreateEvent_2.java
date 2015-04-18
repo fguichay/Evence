@@ -39,10 +39,9 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_2);
 
+        // session manager
         session = new SessionManager(getApplicationContext());
-        if (session.checkLogin()) {
-            finish();
-        }
+        session.checkLogin();
 
         txtFenceStart = (EditText) findViewById(R.id.txtFenceStart);
         txtFenceEnd = (EditText) findViewById(R.id.txtFenceEnd);

@@ -55,10 +55,9 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_4);
 
+        // session manager
         session = new SessionManager(getApplicationContext());
-        if (session.checkLogin()) {
-            finish();
-        }
+        session.checkLogin();
 
         radioSelect = (RadioGroup) findViewById(R.id.radioSelect);
         radioSelect.setOnCheckedChangeListener(this);
@@ -74,6 +73,14 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         btnFinish.setOnClickListener(new View.OnClickListener() {
       public void onClick(View view) {
 
+          HashMap<String, String> user = session.getUserDetails();
+          // name
+          final String userID = user.get(SessionManager.KEY_USER_ID);
+
+          // eventID
+          String eventID = user.get(SessionManager.EVENT_ID);
+
+          Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID ,Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(getApplicationContext(), MainEventsActivity.class);
                 startActivity(intent);

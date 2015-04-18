@@ -125,7 +125,7 @@ public class Login extends Activity {
                     if (!error) {
                         // user successfully logged in
                         // Create login session
-                        session.createLoginSession(true, email, id);
+                        session.createLoginSession(email, id);
 
                         // Launch main activity
                         Intent intent = new Intent(Login.this, MainEventsActivity.class);
