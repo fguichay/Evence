@@ -37,7 +37,7 @@ import static com.android.volley.Request.Method.*;
  */
 public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChangeListener {
 
-
+    private static final String TAG = Register.class.getSimpleName();
     private Button btnPrevious;
     private Button btnFinish;
     private String op1;
@@ -82,6 +82,8 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
 
           Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID ,Toast.LENGTH_LONG).show();
 
+          postParams(eventID);
+
                 Intent intent = new Intent(getApplicationContext(), MainEventsActivity.class);
                 startActivity(intent);
 
@@ -90,6 +92,83 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         });
 
     }
+
+
+
+    private void postParams(String id) {
+
+
+        final String eventID = id;
+        // Tag used to cancel the request
+        String  tag_json_obj = "req_event";
+
+        pDialog.setMessage("Loading...");
+        showpDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, new Response.Listener<String>() {
+
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+
+                /*try {
+
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    int id = jObj.getInt("event_id");
+                    String eventID = Integer.toString(id);
+                    Toast.makeText(getApplicationContext(), "event id: " + eventID ,Toast.LENGTH_LONG).show();
+                    session.createEvent(eventID);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }*/
+
+                hidepDialog();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                hidepDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "endCreate");
+                params.put("uid", eventID);
+
+                return params;
+            }
+
+        };
+// Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
+
+
+    }
+
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
+
+
 
 
 

@@ -6,24 +6,42 @@ package edu.nyit.evence;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInstaller;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
+import edu.nyit.evence.app.AppConfig;
+import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SessionManager;
 
 public class CreateEvent_1 extends Activity {
 
+    private static final String TAG = Register.class.getSimpleName();
     private Button btnNext;
     private Button btnCancel;
     private Calendar cal;
@@ -36,8 +54,19 @@ public class CreateEvent_1 extends Activity {
     private EditText txtEndDate;
     private EditText txtStartTime;
     private EditText txtEndTime;
-
+    private EditText txtEventName;
+    private EditText txtDesc;
+    private ProgressDialog pDialog;
     private SessionManager session;
+
+    private String timeStart;
+    private String timeEnd;
+    private String dateStart;
+    private String dateEnd;
+    private String startFormatted;
+    private String endFormatted;
+    private String eventName;
+    private String desc;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +88,12 @@ public class CreateEvent_1 extends Activity {
         year = cal.get(Calendar.YEAR);
         hour = cal.get(Calendar.HOUR_OF_DAY);
         minute = cal.get(Calendar.MINUTE);
+
+        txtEventName = (EditText) findViewById(R.id.txtEventName);
+        eventName = txtEventName.getText().toString();
+
+        txtDesc = (EditText) findViewById(R.id.txtDesc);
+        desc = txtDesc.getText().toString();
 
         txtStartDate.setOnClickListener(new OnClickListener() {
             @Override
@@ -88,15 +123,44 @@ public class CreateEvent_1 extends Activity {
             }
         });
 
-        addListenerOnButton();
+        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                HashMap<String, String> user = session.getUserDetails();
+                String userID = user.get(SessionManager.KEY_USER_ID);
+                final String eventID = user.get(SessionManager.EVENT_ID);
+
+                //Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID, Toast.LENGTH_LONG).show();
+
+                formatTime(timeStart, timeEnd, dateStart, dateEnd);
+
+                postParams(eventID, eventName, startFormatted, endFormatted, desc);
+
+                Intent intent = new Intent(getApplicationContext(), CreateEvent_2.class);
+                startActivity(intent);
+            }
+
+        });
     }
 
     public void startDateDialog() {
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                monthOfYear = monthOfYear + 1;
-                txtStartDate.setText(monthOfYear + "/" + dayOfMonth + "/" + year);
+                int month = monthOfYear + 1;
+                String formattedMonth = "" + month;
+                String formattedDayOfMonth = "" + dayOfMonth;
+                if (month < 10) {
+
+                    formattedMonth = "0" + month;
+                }
+                if (dayOfMonth < 10) {
+
+                    formattedDayOfMonth = "0" + dayOfMonth;
+                }
+                dateStart = formattedMonth + "-" + formattedDayOfMonth + "-" + year;
+                txtStartDate.setText(dateStart);
             }
         };
 
@@ -108,8 +172,19 @@ public class CreateEvent_1 extends Activity {
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                monthOfYear = monthOfYear + 1;
-                txtEndDate.setText(monthOfYear + "/" + dayOfMonth + "/" + year);
+                int month = monthOfYear + 1;
+                String formattedMonth = "" + month;
+                String formattedDayOfMonth = "" + dayOfMonth;
+                if (month < 10) {
+
+                    formattedMonth = "0" + month;
+                }
+                if (dayOfMonth < 10) {
+
+                    formattedDayOfMonth = "0" + dayOfMonth;
+                }
+                dateEnd = formattedMonth + "-" + formattedDayOfMonth + "-" + year;
+                txtEndDate.setText(dateEnd);
             }
         };
 
@@ -140,6 +215,11 @@ public class CreateEvent_1 extends Activity {
                 }
 
                 txtStartTime.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)).append(" ").append(zone));
+
+                int time = (minute * 60 + hour * 60 * 60) * 1000;
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                timeStart = format.format(time);
+
             }
         };
 
@@ -163,6 +243,11 @@ public class CreateEvent_1 extends Activity {
                 }
 
                 txtEndTime.setText(new StringBuilder().append(pad(hour)).append(":").append(pad(minute)).append(" ").append(zone));
+
+                int time = (minute * 60 + hour * 60 * 60) * 1000;
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                timeEnd = format.format(time);
+
             }
         };
 
@@ -170,17 +255,77 @@ public class CreateEvent_1 extends Activity {
         tpDialog.show();
     }
 
+    public void formatTime(String timeStart, String timeEnd, String dateStart, String dateEnd) {
+
+        startFormatted = dateStart + " " + timeStart;
+        endFormatted = dateEnd + " " + timeEnd;
+
+    }
+
+
+    private void postParams(String id, String name, String start, String end, String desc) {
+
+        final String eID = id;
+        final String eName = name;
+        final String eStart = start;
+        final String eEnd = end;
+        final String eDesc = desc;
+        // Tag used to cancel the request
+        String tag_json_obj = "req_event";
+
+        pDialog.setMessage("Loading...");
+        showpDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, new Response.Listener<String>() {
+
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+                hidepDialog();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                hidepDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "addDetail");
+                params.put("event_id", eID);
+                params.put("name", eName);
+                params.put("desc", eDesc);
+                params.put("start_time", eStart);
+                params.put("end_time", eEnd);
+
+                return params;
+            }
+
+        };
+// Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
+    }
+
+    private void showpDialog() {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private void hidepDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
+
+
+
     public void addListenerOnButton() {
 
         final Context context = this;
-        btnNext = (Button) findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                Intent intent = new Intent(context, CreateEvent_2.class);
-                startActivity(intent);
-            }
-        });
 
         btnCancel = (Button) findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new OnClickListener() {
