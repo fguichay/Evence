@@ -2,6 +2,7 @@ package edu.nyit.evence;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
 
     private SessionManager session;
 
+
     // get user data from session
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         // session manager
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
+
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
 
         radioSelect = (RadioGroup) findViewById(R.id.radioSelect);
         radioSelect.setOnCheckedChangeListener(this);
@@ -70,6 +75,8 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         btnFinish = (Button) findViewById(R.id.btnFinish);
 
 
+
+
         btnFinish.setOnClickListener(new View.OnClickListener() {
       public void onClick(View view) {
 
@@ -78,10 +85,10 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
           final String userID = user.get(SessionManager.KEY_USER_ID);
 
           // eventID
-          String eventID = user.get(SessionManager.EVENT_ID);
+          final String eventID = user.get(SessionManager.EVENT_ID);
+
 
           Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID ,Toast.LENGTH_LONG).show();
-
           postParams(eventID);
 
                 Intent intent = new Intent(getApplicationContext(), MainEventsActivity.class);
@@ -92,7 +99,6 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         });
 
     }
-
 
 
     private void postParams(String id) {
@@ -145,7 +151,7 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("tag", "endCreate");
-                params.put("uid", eventID);
+                params.put("event_id", eventID);
 
                 return params;
             }

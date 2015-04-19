@@ -77,6 +77,9 @@ public class CreateEvent_1 extends Activity {
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+
         txtStartDate = (EditText) findViewById(R.id.txtStartDate);
         txtEndDate = (EditText) findViewById(R.id.txtEndDate);
         txtStartTime = (EditText) findViewById(R.id.txtStartTime);
@@ -270,6 +273,7 @@ public class CreateEvent_1 extends Activity {
         final String eStart = start;
         final String eEnd = end;
         final String eDesc = desc;
+
         // Tag used to cancel the request
         String tag_json_obj = "req_event";
 
