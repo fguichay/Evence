@@ -10,7 +10,6 @@ import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInstaller;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -20,21 +19,17 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-
 import edu.nyit.evence.app.AppConfig;
 import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SessionManager;
@@ -58,7 +53,6 @@ public class CreateEvent_1 extends Activity {
     private EditText txtDesc;
     private ProgressDialog pDialog;
     private SessionManager session;
-
     private String timeStart;
     private String timeEnd;
     private String dateStart;
@@ -73,24 +67,19 @@ public class CreateEvent_1 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_1);
 
-        // session manager
+        // session manager - check for user login
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
+        //initialize user input fields
         txtStartDate = (EditText) findViewById(R.id.txtStartDate);
         txtEndDate = (EditText) findViewById(R.id.txtEndDate);
+
         txtStartTime = (EditText) findViewById(R.id.txtStartTime);
         txtEndTime = (EditText) findViewById(R.id.txtEndTime);
-
-        cal = Calendar.getInstance();
-        day = cal.get(Calendar.DAY_OF_MONTH);
-        month = cal.get(Calendar.MONTH);
-        year = cal.get(Calendar.YEAR);
-        hour = cal.get(Calendar.HOUR_OF_DAY);
-        minute = cal.get(Calendar.MINUTE);
 
         txtEventName = (EditText) findViewById(R.id.txtEventName);
         eventName = txtEventName.getText().toString();
@@ -98,27 +87,33 @@ public class CreateEvent_1 extends Activity {
         txtDesc = (EditText) findViewById(R.id.txtDesc);
         desc = txtDesc.getText().toString();
 
+        //initialize calendar items
+        cal = Calendar.getInstance();
+        day = cal.get(Calendar.DAY_OF_MONTH);
+        month = cal.get(Calendar.MONTH);
+        year = cal.get(Calendar.YEAR);
+        hour = cal.get(Calendar.HOUR_OF_DAY);
+        minute = cal.get(Calendar.MINUTE);
+
+        //initialize onClick listeners for time & date text fields
         txtStartDate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDateDialog();
             }
         });
-
         txtEndDate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 endDateDialog();
             }
         });
-
         txtStartTime.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 startTimeDialog();
             }
         });
-
         txtEndTime.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,13 +121,15 @@ public class CreateEvent_1 extends Activity {
             }
         });
 
+        //get userID and eventID from shared preferences
+        HashMap<String, String> user = session.getUserDetails();
+        final String userID = user.get(SessionManager.KEY_USER_ID);
+        final String eventID = user.get(SessionManager.EVENT_ID);
+
+        //initialize Next button & set onClick listener - sends user to the location form
         btnNext = (Button) findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
-                HashMap<String, String> user = session.getUserDetails();
-                String userID = user.get(SessionManager.KEY_USER_ID);
-                final String eventID = user.get(SessionManager.EVENT_ID);
 
                 //Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID, Toast.LENGTH_LONG).show();
 
@@ -145,8 +142,19 @@ public class CreateEvent_1 extends Activity {
             }
 
         });
+
+        //initialize Cancel button & set onClick listener - returns the user to the main events page
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getApplication(), MainEventsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
+    //method to get the start date
     public void startDateDialog() {
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -171,6 +179,7 @@ public class CreateEvent_1 extends Activity {
         dpDialog.show();
     }
 
+    //method to get an end date
     public void endDateDialog() {
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -195,6 +204,7 @@ public class CreateEvent_1 extends Activity {
         dpDialog.show();
     }
 
+    //helper method to format time picker values
     private static String pad(int c) {
         if (c >= 10)
             return String.valueOf(c);
@@ -202,6 +212,7 @@ public class CreateEvent_1 extends Activity {
             return "0" + String.valueOf(c);
     }
 
+    //method to get a start time
     public void startTimeDialog() {
         TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -230,6 +241,7 @@ public class CreateEvent_1 extends Activity {
         tpDialog.show();
     }
 
+    //method to get an end time
     public void endTimeDialog() {
         TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -258,14 +270,13 @@ public class CreateEvent_1 extends Activity {
         tpDialog.show();
     }
 
+    //format start time and end time to: mm:dd:yyyy hh:mm:ss
     public void formatTime(String timeStart, String timeEnd, String dateStart, String dateEnd) {
-
         startFormatted = dateStart + " " + timeStart;
         endFormatted = dateEnd + " " + timeEnd;
-
     }
 
-
+    //method to post parameters to db
     private void postParams(String id, String name, String start, String end, String desc) {
 
         final String eID = id;
@@ -281,7 +292,6 @@ public class CreateEvent_1 extends Activity {
         showpDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, new Response.Listener<String>() {
-
 
             @Override
             public void onResponse(String response) {
@@ -311,7 +321,8 @@ public class CreateEvent_1 extends Activity {
             }
 
         };
-// Adding request to request queue
+
+        // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
     }
 
@@ -325,19 +336,4 @@ public class CreateEvent_1 extends Activity {
             pDialog.dismiss();
     }
 
-
-
-    public void addListenerOnButton() {
-
-        final Context context = this;
-
-        btnCancel = (Button) findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, MainEventsActivity.class);
-                startActivity(i);
-            }
-        });
-    }
 }

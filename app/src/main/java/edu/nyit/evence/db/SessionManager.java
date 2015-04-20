@@ -89,7 +89,6 @@ public class SessionManager {
         return user;
     }
 
-
     /**
      * Check login method will check user login status
      * If false it will redirect user to login page
@@ -111,8 +110,6 @@ public class SessionManager {
 
         }
     }
-
-
 
     /**
      * Clear session details

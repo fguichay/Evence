@@ -45,51 +45,47 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
     private RadioGroup radioSelect;
     private EditText txtArriving;
     private EditText txtDeparting;
+    private String arrivingMessage;
+    private String departingMessage;
     private ProgressDialog pDialog;
-
-
     private SessionManager session;
-
-
-    // get user data from session
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_4);
 
-        // session manager
+        // session manager - check for user login
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
+        //initialize user input fields
         radioSelect = (RadioGroup) findViewById(R.id.radioSelect);
         radioSelect.setOnCheckedChangeListener(this);
-
         txtArriving = (EditText) findViewById(R.id.txtArriving);
         txtDeparting = (EditText) findViewById(R.id.txtDeparting);
         actv(false);
 
+        arrivingMessage = txtArriving.getText().toString();
+        departingMessage = txtDeparting.getText().toString();
 
+        //get userID and eventID from shared preferences
+        HashMap<String, String> user = session.getUserDetails();
+        final String userID = user.get(SessionManager.KEY_USER_ID);
+        final String eventID = user.get(SessionManager.EVENT_ID);
+
+        //initialize Finish button & set onClick listener - create the event & return the user to the main events page
         btnFinish = (Button) findViewById(R.id.btnFinish);
-
-
-
-
         btnFinish.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View view) {
+            public void onClick(View view) {
 
-          HashMap<String, String> user = session.getUserDetails();
-          // name
-          final String userID = user.get(SessionManager.KEY_USER_ID);
+                Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID, Toast.LENGTH_LONG).show();
 
-          // eventID
-          final String eventID = user.get(SessionManager.EVENT_ID);
+                //insert code to pass the custom notification messages onyl if the custom button is selected
 
-
-          Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID ,Toast.LENGTH_LONG).show();
-          postParams(eventID);
+                postParams(eventID);
 
                 Intent intent = new Intent(getApplicationContext(), MainEventsActivity.class);
                 startActivity(intent);
@@ -98,15 +94,27 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
 
         });
 
+        //initialize Previous button & set onClick listener - send the user back to the invite-users form
+        btnPrevious = (Button) findViewById(R.id.btnPrevious);
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+
+            //double check code below..
+
+            public void onClick(View view) {
+                //Intent intent = new Intent(getApplicationContext(), CreateEvent_3.class);
+                //startActivity(intent);
+
+            }
+        });
+
     }
 
 
     private void postParams(String id) {
 
-
         final String eventID = id;
         // Tag used to cancel the request
-        String  tag_json_obj = "req_event";
+        String tag_json_obj = "req_event";
 
         pDialog.setMessage("Loading...");
         showpDialog();
@@ -157,12 +165,11 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
             }
 
         };
-// Adding request to request queue
+
+        // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
 
-
     }
-
 
     private void showpDialog() {
         if (!pDialog.isShowing())
@@ -173,9 +180,6 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
-
-
-
 
 
     @Override

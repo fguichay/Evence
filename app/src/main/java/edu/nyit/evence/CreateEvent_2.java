@@ -6,7 +6,6 @@ package edu.nyit.evence;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +30,7 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
     private SeekBar barRadius;
     private TextView viewRadius;
     static Dialog d;
+    private String eventAddress;
 
     private SessionManager session;
 
@@ -39,16 +39,21 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_2);
 
-        // session manager
+        //session manager - check for user login
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
+        //initialize user input fields
         txtFenceStart = (EditText) findViewById(R.id.txtFenceStart);
         txtFenceEnd = (EditText) findViewById(R.id.txtFenceEnd);
+
         barRadius = (SeekBar) findViewById(R.id.barRadius);
         viewRadius = (TextView) findViewById(R.id.viewRadius);
 
-        //initalize radius seekbar
+        txtAddress = (EditText) findViewById(R.id.txtAddress);
+        eventAddress = txtAddress.getText().toString();
+
+        //initialize the radius seekbar
         viewRadius.setText("Radius: " + barRadius.getProgress() + " Miles");
         barRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
@@ -72,7 +77,7 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         txtFenceStart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startShow();
+                startFence();
             }
         });
 
@@ -80,15 +85,52 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         txtFenceEnd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                endShow();
+                endFence();
             }
         });
 
-        //temporary? - buttons to navigate screens
-        addListenerOnButton();
+        //initialize Locate button & set onClick listener
+        btnLocate = (Button) findViewById(R.id.btnLocate);
+        btnLocate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                //insert code for "locate" button to search & display location on google maps
+
+            }
+
+        });
+
+        //initialize Next button & set onClick listener - sends user to the invite-guests form
+        btnNext = (Button) findViewById(R.id.btnNext);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+
+            //code to pass parameters to db once next button is clicked
+            //postParams();
+
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CreateEvent_3.class);
+                startActivity(intent);
+            }
+
+        });
+
+        //initialize Previous button & set onClick listener - returns the user to the event-details form
+        btnPrevious = (Button) findViewById(R.id.btnPrevious);
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+
+            //code to go back to the previous activity (double check code below..)
+
+            public void onClick(View view) {
+                //Intent intent = new Intent(getApplicationContext(), CreateEvent_1.class);
+                //startActivity(intent);
+            }
+
+        });
+
     }
 
-    public void startShow() {
+    //method to get a fence start time
+    public void startFence() {
 
         final Dialog d = new Dialog(CreateEvent_2.this);
         d.setTitle("Select a Time [hh:mm]");
@@ -99,8 +141,8 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         final NumberPicker hour = (NumberPicker) d.findViewById(R.id.numberPicker1);
         final NumberPicker minute = (NumberPicker) d.findViewById(R.id.numberPicker2);
 
-        hour.setMaxValue(12); // max value 100
-        hour.setMinValue(0);   // min value 0
+        hour.setMaxValue(12); //hour max value 12
+        hour.setMinValue(0);   //hour min value 0
         hour.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int i) {
@@ -110,8 +152,8 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         hour.setWrapSelectorWheel(true);
         hour.setOnValueChangedListener(this);
 
-        minute.setMaxValue(60); // max value 60
-        minute.setMinValue(0);   // min value 1
+        minute.setMaxValue(60); //minute max value 60
+        minute.setMinValue(0);   //minute min value 0
         minute.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int i) {
@@ -121,6 +163,7 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         minute.setWrapSelectorWheel(true);
         minute.setOnValueChangedListener(this);
 
+        //initializes Set button & display the time selected
         b1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +176,7 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
             }
         });
 
+        //initializes Cancel button & dismisses the time picker dialog
         b2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -142,7 +186,8 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         d.show();
     }
 
-    public void endShow() {
+    //method to get a fence end time
+    public void endFence() {
 
         final Dialog d = new Dialog(CreateEvent_2.this);
         d.setTitle("Select a Time [hh:mm]");
@@ -153,8 +198,8 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         final NumberPicker hour = (NumberPicker) d.findViewById(R.id.numberPicker1);
         final NumberPicker minute = (NumberPicker) d.findViewById(R.id.numberPicker2);
 
-        hour.setMaxValue(12); // max value 100
-        hour.setMinValue(0);   // min value 0
+        hour.setMaxValue(12); //hour max value 12
+        hour.setMinValue(0);   //hour min value 0
         hour.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int i) {
@@ -164,8 +209,8 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         hour.setWrapSelectorWheel(true);
         hour.setOnValueChangedListener(this);
 
-        minute.setMaxValue(60); // max value 60
-        minute.setMinValue(0);   // min value 1
+        minute.setMaxValue(60); //minute max value 60
+        minute.setMinValue(0);   //minute min value 0
         minute.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int i) {
@@ -175,6 +220,7 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         minute.setWrapSelectorWheel(true);
         minute.setOnValueChangedListener(this);
 
+        //initializes Set button & display the time selected
         b1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +233,7 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
             }
         });
 
+        //initializes Cancel button & dismisses the time picker dialog
         b2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,22 +243,9 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         d.show();
     }
 
+    //log changes to numberpicker
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         Log.i("value is", "" + newVal);
-    }
-
-    public void addListenerOnButton() {
-        final Context context = this;
-        btnNext = (Button) findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                Intent intent = new Intent(context, CreateEvent_3.class);
-                startActivity(intent);
-            }
-
-        });
     }
 }
