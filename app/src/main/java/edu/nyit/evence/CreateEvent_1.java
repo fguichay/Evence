@@ -129,6 +129,8 @@ public class CreateEvent_1 extends Activity {
                 desc = txtDesc.getText().toString();
                 eventName = txtEventName.getText().toString();
 
+                session.storeEventName(eventName);
+
                 //Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID, Toast.LENGTH_LONG).show();
 
                 formatTime(timeStart, timeEnd, dateStart, dateEnd);

@@ -44,6 +44,13 @@ public class SessionManager {
     // event ID
     public static final String EVENT_ID = "eventid";
 
+    // event name
+    public static final String EVENT_NAME = "eventname";
+
+    // guest ID
+    public static final String GUEST_ID = "guestid";
+
+
     // constructor
     public SessionManager(Context context) {
         this._context = context;
@@ -55,6 +62,17 @@ public class SessionManager {
         editor.putString(EVENT_ID, id); // Storing string
         editor.commit(); //
     }
+
+    public void storeEventName(String name){
+        editor.putString(EVENT_NAME, name); // Store event name
+        editor.commit(); //
+    }
+
+    public void storeGuestID(String id){
+        editor.putString(GUEST_ID, id); // Store guest ID
+        editor.commit(); //
+    }
+
 
     public void createLoginSession(String email, String id) {
 
@@ -85,6 +103,11 @@ public class SessionManager {
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
         //event id
         user.put(EVENT_ID, pref.getString(EVENT_ID, null));
+        //event name
+        user.put(EVENT_NAME, pref.getString(EVENT_NAME, null));
+        //guest ID
+        user.put(GUEST_ID, pref.getString(GUEST_ID, null));
+
 
         return user;
     }

@@ -50,6 +50,11 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
     private ProgressDialog pDialog;
     private SessionManager session;
 
+
+    private String eventName;
+    private String useDefault;
+    private String useCustom;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_4);
@@ -68,24 +73,42 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         txtDeparting = (EditText) findViewById(R.id.txtDeparting);
         actv(false);
 
-        arrivingMessage = txtArriving.getText().toString();
-        departingMessage = txtDeparting.getText().toString();
+
 
         //get userID and eventID from shared preferences
         HashMap<String, String> user = session.getUserDetails();
         final String userID = user.get(SessionManager.KEY_USER_ID);
         final String eventID = user.get(SessionManager.EVENT_ID);
+        eventName = user.get(SessionManager.EVENT_NAME);
 
         //initialize Finish button & set onClick listener - create the event & return the user to the main events page
         btnFinish = (Button) findViewById(R.id.btnFinish);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
+                String arrive1 = txtArriving.getText().toString();
+                String depart1 = txtDeparting.getText().toString();
+
+                if(arrive1.length() == 0  && depart1.length() == 0){
+                    useDefault = "1";
+                    useCustom = "0";
+
+                    arrivingMessage = "Welcome to " + eventName;
+                    departingMessage = "Thank you for attending " + eventName;
+                } else {
+                    useDefault = "0";
+                    useCustom = "1";
+
+                    arrivingMessage = arrive1;
+                    departingMessage = depart1;
+
+                }
+
                 Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID, Toast.LENGTH_LONG).show();
 
                 //insert code to pass the custom notification messages onyl if the custom button is selected
 
-                postParams(eventID);
+                postParams(eventID, useDefault, useCustom, arrivingMessage, departingMessage);
 
                 Intent intent = new Intent(getApplicationContext(), MainEventsActivity.class);
                 startActivity(intent);
@@ -110,9 +133,10 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
     }
 
 
-    private void postParams(String id) {
-        System.out.println("create event4"+id);
-        final String eventID = id;
+    private void postParams(final String id, final String defaultOpt, final String customOpt, final String arriving, final String departing) {
+
+        System.out.println("create event4: "+id);
+
         // Tag used to cancel the request
         String tag_json_obj = "req_event";
 
@@ -159,8 +183,11 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("tag", "endCreate");
-                params.put("event_id", eventID);
-
+                params.put("event_id", id);
+                params.put("use_default", defaultOpt);
+                params.put("use_custom", customOpt);
+                params.put("notify_arriving_guest", arriving);
+                params.put("notify_departing_guest", departing);
                 return params;
             }
 
@@ -203,7 +230,6 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         if (active) {
             txtDeparting.requestFocus();
             txtArriving.requestFocus();
-
         }
     }
 }

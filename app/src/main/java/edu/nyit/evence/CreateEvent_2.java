@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Criteria;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -29,6 +30,7 @@ import edu.nyit.evence.app.AppConfig;
 import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SessionManager;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -70,7 +72,7 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
     private LocationManager locMan;
     private Marker userMarker;
     private int userIcon;
-    static final LatLng TutorialsPoint = new LatLng(21 , 57);
+    static final LatLng myCoordinates = new LatLng(40.769965 , -73.982562);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,11 +84,57 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
                 googleMap = ((MapFragment) getFragmentManager().
                         findFragmentById(R.id.map)).getMap();
             }
-            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            Marker TP = googleMap.addMarker(new MarkerOptions().
-                    position(TutorialsPoint).title("TutorialsPoint"));
 
-        } catch (Exception e) {
+            //googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker").snippet("Snippet"));
+
+            // Enable MyLocation Layer of Google Map
+            googleMap.setMyLocationEnabled(true);
+
+            // Get LocationManager object from System Service LOCATION_SERVICE
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            // Create a criteria object to retrieve provider
+            Criteria criteria = new Criteria();
+
+            // Get the name of the best provider
+            String provider = locationManager.getBestProvider(criteria, true);
+
+            // Get Current Location
+            Location myLocation = locationManager.getLastKnownLocation(provider);
+
+            // set map type
+            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+            // Get latitude of the current location
+            double latitude = myLocation.getLatitude();
+
+            // Get longitude of the current location
+            double longitude = myLocation.getLongitude();
+
+            // Create a LatLng object for the current location
+            LatLng latLng = new LatLng(latitude, longitude);
+
+            // Show the current location in Google Map
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+            // Zoom in the Google Map
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
+
+
+            LatLng myCoordinates = new LatLng(latitude, longitude);
+            CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 12);
+            googleMap.animateCamera(yourLocation);
+
+
+
+            //googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            //Marker TP = googleMap.addMarker(new MarkerOptions().
+            //        position(TutorialsPoint).title("TutorialsPoint"));
+
+        }
+
+        catch (Exception e) {
             e.printStackTrace();
         }
 

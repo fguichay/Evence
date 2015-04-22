@@ -39,10 +39,15 @@ public class CreateEvent_3 extends Activity {
     private ListView lvGuestlist;
     private EditText txtEmail;
     private ArrayList<Model> myGuestlist;
+
+    private ArrayList<String> tempList;
+
     private CustomAdapter adapter;
     private ProgressDialog pDialog;
     private SessionManager session;
     String name;
+
+    private String userID = null;
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -61,10 +66,7 @@ public class CreateEvent_3 extends Activity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        //get userID and eventID from shared preferences
-        HashMap<String, String> user = session.getUserDetails();
-        final String userID = user.get(SessionManager.KEY_USER_ID);
-        final String eventID = user.get(SessionManager.EVENT_ID);
+
 
         lvGuestlist = (ListView) findViewById(R.id.lvGuestlist);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
@@ -94,22 +96,47 @@ public class CreateEvent_3 extends Activity {
     }
 
     public void addbtn(View v) {
-        String name = txtEmail.getText().toString();
+        String email = txtEmail.getText().toString();
 
-        if (name.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Plz enter Values", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Please enter a value.", Toast.LENGTH_SHORT).show();
         } else {
-            Model md = new Model(name);
+            postParams(email);
 
-            myGuestlist.add(md);
-            adapter.notifyDataSetChanged();
-            txtEmail.setText("");
+            //get userID and eventID from shared preferences
+            HashMap<String, String> user = session.getUserDetails();
+            final String uID = user.get(SessionManager.GUEST_ID);
+
+            if(uID =="") {
+                Toast.makeText(getApplicationContext(), "User doesn't exist.", Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(getApplicationContext(), "User ID:"+uID, Toast.LENGTH_LONG).show();
+                Model md = new Model(email);
+                myGuestlist.add(md);
+                adapter.notifyDataSetChanged();
+                txtEmail.setText("");
+
+            }
+
+
         }
+    }
+
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
     }
 
 
     private void postParams(String email) {
-
         final String eMail = email;
         // Tag used to cancel the request
         String tag_string_req = "req_guests";
@@ -125,11 +152,24 @@ public class CreateEvent_3 extends Activity {
                 hideDialog();
 
                 try {
+
+
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
 
+                    int uid = jObj.getInt("uid");
+                    userID = Integer.toString(uid);
+
+                    if(isNumeric(userID)) {
+                        session.storeGuestID(userID);
+                    }
+                    else {
+                        session.storeGuestID("");
+                    }
+
+
                     //String userName = jObj.getString("name");
-                    //Toast.makeText(getApplicationContext(), "name: " + userName, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "user ID: " + userID, Toast.LENGTH_LONG).show();
                     //name = userName;
 
                 } catch (JSONException e) {
@@ -153,14 +193,13 @@ public class CreateEvent_3 extends Activity {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("tag", "addGuests");
+                params.put("tag", "checkGuest");
                 params.put("email", eMail);
 
                 return params;
             }
 
         };
-
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
 
