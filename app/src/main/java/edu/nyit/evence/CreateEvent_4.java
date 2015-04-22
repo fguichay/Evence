@@ -111,7 +111,7 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
 
 
     private void postParams(String id) {
-
+        System.out.println("create event4"+id);
         final String eventID = id;
         // Tag used to cancel the request
         String tag_json_obj = "req_event";

@@ -148,7 +148,7 @@ public class MainEventsActivity extends ActionBarActivity {
         final String uid = userID;
         // Tag used to cancel the request
         String  tag_json_obj = "req_event";
-
+        System.out.println(uid);
         pDialog.setMessage("Loading...");
         showpDialog();
 
@@ -167,6 +167,7 @@ public class MainEventsActivity extends ActionBarActivity {
                     int id = jObj.getInt("event_id");
                     String eventID = Integer.toString(id);
                     Toast.makeText(getApplicationContext(), "event id: " + eventID ,Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "this is the event id beinbg passes" + eventID);
                     session.createEvent(eventID);
 
 

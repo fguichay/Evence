@@ -42,7 +42,7 @@ public class SessionManager {
     public static final String KEY_EMAIL = "email";
 
     // event ID
-    public static final String EVENT_ID = "id";
+    public static final String EVENT_ID = "eventid";
 
     // constructor
     public SessionManager(Context context) {

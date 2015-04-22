@@ -71,21 +71,21 @@ public class CreateEvent_1 extends Activity {
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
+        //get userID and eventID from shared preferences
+        HashMap<String, String> user = session.getUserDetails();
+        final String userID = user.get(SessionManager.KEY_USER_ID);
+        final String eventID = user.get(SessionManager.EVENT_ID);
+
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
         //initialize user input fields
         txtStartDate = (EditText) findViewById(R.id.txtStartDate);
         txtEndDate = (EditText) findViewById(R.id.txtEndDate);
-
         txtStartTime = (EditText) findViewById(R.id.txtStartTime);
         txtEndTime = (EditText) findViewById(R.id.txtEndTime);
-
         txtEventName = (EditText) findViewById(R.id.txtEventName);
-        eventName = txtEventName.getText().toString();
-
         txtDesc = (EditText) findViewById(R.id.txtDesc);
-        desc = txtDesc.getText().toString();
 
         //initialize calendar items
         cal = Calendar.getInstance();
@@ -121,19 +121,21 @@ public class CreateEvent_1 extends Activity {
             }
         });
 
-        //get userID and eventID from shared preferences
-        HashMap<String, String> user = session.getUserDetails();
-        final String userID = user.get(SessionManager.KEY_USER_ID);
-        final String eventID = user.get(SessionManager.EVENT_ID);
-
         //initialize Next button & set onClick listener - sends user to the location form
         btnNext = (Button) findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
+
             public void onClick(View view) {
+                desc = txtDesc.getText().toString();
+                eventName = txtEventName.getText().toString();
 
                 //Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID, Toast.LENGTH_LONG).show();
 
                 formatTime(timeStart, timeEnd, dateStart, dateEnd);
+                System.out.println(startFormatted);
+                System.out.println(endFormatted);
+
+                System.out.println("names before passed: "+ eventName + desc);
 
                 postParams(eventID, eventName, startFormatted, endFormatted, desc);
 
@@ -170,7 +172,8 @@ public class CreateEvent_1 extends Activity {
 
                     formattedDayOfMonth = "0" + dayOfMonth;
                 }
-                dateStart = formattedMonth + "-" + formattedDayOfMonth + "-" + year;
+                dateStart = year + "-" + formattedMonth + "-" + formattedDayOfMonth;
+
                 txtStartDate.setText(dateStart);
             }
         };
@@ -195,7 +198,7 @@ public class CreateEvent_1 extends Activity {
 
                     formattedDayOfMonth = "0" + dayOfMonth;
                 }
-                dateEnd = formattedMonth + "-" + formattedDayOfMonth + "-" + year;
+                dateEnd = year + "-" + formattedMonth + "-" + formattedDayOfMonth;
                 txtEndDate.setText(dateEnd);
             }
         };
@@ -278,13 +281,13 @@ public class CreateEvent_1 extends Activity {
 
     //method to post parameters to db
     private void postParams(String id, String name, String start, String end, String desc) {
-
+        System.out.println("create event1"+id);
         final String eID = id;
         final String eName = name;
         final String eStart = start;
         final String eEnd = end;
         final String eDesc = desc;
-
+        System.out.println("this is event name"+ eName + eDesc);
         // Tag used to cancel the request
         String tag_json_obj = "req_event";
 
@@ -313,7 +316,7 @@ public class CreateEvent_1 extends Activity {
                 params.put("tag", "addDetail");
                 params.put("event_id", eID);
                 params.put("name", eName);
-                params.put("desc", eDesc);
+                params.put("descr", eDesc);
                 params.put("start_time", eStart);
                 params.put("end_time", eEnd);
 
