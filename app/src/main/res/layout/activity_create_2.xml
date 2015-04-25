@@ -79,7 +79,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="5dp"
-                        android:onClick="mapsLocate"
+                        android:onClick="geoLocate"
                         android:text="Locate"
                         android:textAllCaps="false"
                         android:background="#A4A4A4" />
@@ -100,7 +100,7 @@
                     android:id="@+id/map"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
 
 
                     />

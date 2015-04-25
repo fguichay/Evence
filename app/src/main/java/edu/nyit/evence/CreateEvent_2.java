@@ -6,12 +6,15 @@ package edu.nyit.evence;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.location.Criteria;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,11 +27,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
+
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import edu.nyit.evence.app.AppConfig;
 import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SessionManager;
+
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,6 +44,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -44,14 +53,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.location.Location;
 import android.location.LocationManager;
 import android.content.Context;
+import android.widget.Toast;
 
 
-public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChangeListener {
+public class CreateEvent_2 extends FragmentActivity implements NumberPicker.OnValueChangeListener {
 
     private static final String TAG = Register.class.getSimpleName();
     private Button btnPrevious;
     private Button btnNext;
-    private Button btnLocate;
     private EditText txtAddress;
     private EditText txtFenceStart;
     private EditText txtFenceEnd;
@@ -68,75 +77,27 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
     private String startTimeFormatted;
     private String endTimeFormatted;
 
-    private GoogleMap googleMap;
+    private GoogleMap mMap;
     private LocationManager locMan;
     private Marker userMarker;
     private int userIcon;
-    static final LatLng myCoordinates = new LatLng(40.769965 , -73.982562);
+
+    private static final double NEWYORK_LAT = 40.714353, NEWYORK_LNG = -74.005973;
+    private static final float DEFAULTZOOM = 10;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_2);
 
-        try {
-            if (googleMap == null) {
-                googleMap = ((MapFragment) getFragmentManager().
-                        findFragmentById(R.id.map)).getMap();
-            }
-
-            //googleMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker").snippet("Snippet"));
-
-            // Enable MyLocation Layer of Google Map
-            googleMap.setMyLocationEnabled(true);
-
-            // Get LocationManager object from System Service LOCATION_SERVICE
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-            // Create a criteria object to retrieve provider
-            Criteria criteria = new Criteria();
-
-            // Get the name of the best provider
-            String provider = locationManager.getBestProvider(criteria, true);
-
-            // Get Current Location
-            Location myLocation = locationManager.getLastKnownLocation(provider);
-
-            // set map type
-            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-            // Get latitude of the current location
-            double latitude = myLocation.getLatitude();
-
-            // Get longitude of the current location
-            double longitude = myLocation.getLongitude();
-
-            // Create a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);
-
-            // Show the current location in Google Map
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-            // Zoom in the Google Map
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!").snippet("Consider yourself located"));
-
-
-            LatLng myCoordinates = new LatLng(latitude, longitude);
-            CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(myCoordinates, 12);
-            googleMap.animateCamera(yourLocation);
-
-
-
-            //googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            //Marker TP = googleMap.addMarker(new MarkerOptions().
-            //        position(TutorialsPoint).title("TutorialsPoint"));
+        if (initMap()) {
+            Toast.makeText(this, "Ready to map!", Toast.LENGTH_SHORT).show();
 
         }
-
-        catch (Exception e) {
-            e.printStackTrace();
+        else {
+            Toast.makeText(this, "Map not available!", Toast.LENGTH_SHORT).show();
         }
+
 
         //session manager - check for user login
         session = new SessionManager(getApplicationContext());
@@ -156,7 +117,7 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
         txtFenceEnd = (EditText) findViewById(R.id.txtFenceEnd);
         barRadius = (SeekBar) findViewById(R.id.barRadius);
         viewRadius = (TextView) findViewById(R.id.viewRadius);
-        txtAddress = (EditText) findViewById(R.id.txtAddress);
+
 
         //initialize the radius seekbar
         viewRadius.setText("Radius: " + barRadius.getProgress() + " Miles");
@@ -191,19 +152,6 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
             public void onClick(View v) {
                 endFence();
             }
-        });
-
-        //initialize Locate button & set onClick listener
-        btnLocate = (Button) findViewById(R.id.btnLocate);
-        btnLocate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-
-                eventAddress = txtAddress.getText().toString();
-
-                //insert code for "locate" button to search & display location on google maps
-
-            }
-
         });
 
         latitude = 40.769620;
@@ -454,6 +402,52 @@ public class CreateEvent_2 extends Activity implements NumberPicker.OnValueChang
 
 //GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS
 
+    public void geoLocate(View v)throws IOException{
+        hideSoftKeyboard(v);
 
+        txtAddress = (EditText) findViewById(R.id.txtAddress);
+        String location = txtAddress.getText().toString();
+
+        Geocoder gc = new Geocoder(this);
+        List<Address> list = gc.getFromLocationName(location, 1);
+        Address add = list.get(0);
+        String locality = add.getLocality();
+
+        Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
+
+        double lat = add.getLatitude();
+        double lng = add.getLongitude();
+
+        gotoLocation(lat, lng, DEFAULTZOOM);
+
+
+    }
+
+    public void hideSoftKeyboard(View v){
+        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+
+    private boolean initMap() {
+        if (mMap == null) {
+            SupportMapFragment mapFrag =
+                    (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            mMap = mapFrag.getMap();
+        }
+        return (mMap != null);
+    }
+
+    private void gotoLocation(double lat, double lng){
+        LatLng ll = new LatLng(lat, lng);
+        CameraUpdate update = CameraUpdateFactory.newLatLng(ll);
+        mMap.moveCamera(update);
+    }
+
+    private void gotoLocation(double lat, double lng, float zoom) {
+        LatLng ll = new LatLng(lat, lng);
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, zoom);
+        mMap.moveCamera(update);
+    }
 
 }

@@ -66,8 +66,7 @@ public class CreateEvent_3 extends Activity {
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-
-
+        //initialize guestlist & get an email from textbox
         lvGuestlist = (ListView) findViewById(R.id.lvGuestlist);
         txtEmail = (EditText) findViewById(R.id.txtEmail);
 
@@ -85,7 +84,6 @@ public class CreateEvent_3 extends Activity {
 
         btnNext = (Button) findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
-
             public void onClick(View view) {
 
                 Intent intent = new Intent(getApplicationContext(), CreateEvent_4.class);
