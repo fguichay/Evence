@@ -4,9 +4,7 @@ package edu.nyit.evence;
  * Created by Frank on 3/17/2015.
  */
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Address;
@@ -22,6 +20,7 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -32,31 +31,33 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import edu.nyit.evence.app.AppConfig;
 import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SessionManager;
 
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.location.Location;
 import android.location.LocationManager;
-import android.content.Context;
 import android.widget.Toast;
 
 
-public class CreateEvent_2 extends FragmentActivity implements NumberPicker.OnValueChangeListener {
+public class CreateEvent_2 extends FragmentActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener,
+        NumberPicker.OnValueChangeListener {
 
     private static final String TAG = Register.class.getSimpleName();
     private Button btnPrevious;
@@ -70,20 +71,19 @@ public class CreateEvent_2 extends FragmentActivity implements NumberPicker.OnVa
     private ProgressDialog pDialog;
     private SessionManager session;
     private String eventAddress;
-    private double latitude;
-    private double longitude;
+    String latitude = null;
+    String longitude = null;
     private double radius;
     private int geoFenceID;
     private String startTimeFormatted;
     private String endTimeFormatted;
-
     private GoogleMap mMap;
-    private LocationManager locMan;
-    private Marker userMarker;
-    private int userIcon;
 
     private static final double NEWYORK_LAT = 40.714353, NEWYORK_LNG = -74.005973;
     private static final float DEFAULTZOOM = 10;
+
+    GoogleApiClient mLocationClient;
+    Marker marker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,9 +92,13 @@ public class CreateEvent_2 extends FragmentActivity implements NumberPicker.OnVa
 
         if (initMap()) {
             Toast.makeText(this, "Ready to map!", Toast.LENGTH_SHORT).show();
+            //mMap.setMyLocationEnabled(true);
 
-        }
-        else {
+            gotoLocation(NEWYORK_LAT, NEWYORK_LNG, DEFAULTZOOM);
+
+            mLocationClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+            mLocationClient.connect();
+        } else {
             Toast.makeText(this, "Map not available!", Toast.LENGTH_SHORT).show();
         }
 
@@ -154,13 +158,11 @@ public class CreateEvent_2 extends FragmentActivity implements NumberPicker.OnVa
             }
         });
 
-        latitude = 40.769620;
-        longitude = -73.982647;
         radius = 8.9;
         geoFenceID = 5555555;
 
-        final String eventLatd = String.valueOf(latitude);
-        final String eventLong = String.valueOf(longitude);
+        //final String eventLatd = String.valueOf(latitude);
+        //final String eventLong = String.valueOf(longitude);
         final String eventRadius = String.valueOf(radius);
         final String gFenceID = Integer.toString(geoFenceID);
 
@@ -170,12 +172,12 @@ public class CreateEvent_2 extends FragmentActivity implements NumberPicker.OnVa
             public void onClick(View view) {
 
                 //code to pass parameters to db once next button is clicked
-                postParams(eventID, eventAddress, eventLatd, eventLong, eventRadius, gFenceID, startTimeFormatted, endTimeFormatted);
+                postParams(eventID, eventAddress, latitude, longitude, eventRadius, gFenceID, startTimeFormatted, endTimeFormatted);
 
                 System.out.println("this is eventid: " + eventID);
                 System.out.println("this is eventAddress: " + eventAddress);
-                System.out.println("this is eventLatd: " + eventLatd);
-                System.out.println("this is eventLong: " + eventLong);
+                System.out.println("this is eventLatd: " + latitude);
+                System.out.println("this is eventLong: " + longitude);
                 System.out.println("this is eventRadius: " + eventRadius);
                 System.out.println("this is gfenceID: " + gFenceID);
                 System.out.println("this is geostarttime: " + startTimeFormatted);
@@ -402,11 +404,17 @@ public class CreateEvent_2 extends FragmentActivity implements NumberPicker.OnVa
 
 //GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS - GOOGLE MAPS METHODS
 
-    public void geoLocate(View v)throws IOException{
-        hideSoftKeyboard(v);
-
+    public void geoLocate(View v) throws IOException {
+        //hideSoftKeyboard(v);
         txtAddress = (EditText) findViewById(R.id.txtAddress);
         String location = txtAddress.getText().toString();
+
+
+
+        if (location.length() == 0) {
+            Toast.makeText(this, "Please enter a location", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Geocoder gc = new Geocoder(this);
         List<Address> list = gc.getFromLocationName(location, 1);
@@ -420,11 +428,23 @@ public class CreateEvent_2 extends FragmentActivity implements NumberPicker.OnVa
 
         gotoLocation(lat, lng, DEFAULTZOOM);
 
+        setMarker(locality, lat, lng);
+
+        eventAddress = locality;
+
+        latitude = String.valueOf(lat);
+        longitude = String.valueOf(lng);
+
+        System.out.println("geolocate loc: " + latitude + " , " + longitude );
 
     }
 
-    public void hideSoftKeyboard(View v){
-        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+    public void geoCurrentLocation(View v) throws IOException {
+        gotoCurrentLocation();
+    }
+
+    public void hideSoftKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
@@ -434,20 +454,119 @@ public class CreateEvent_2 extends FragmentActivity implements NumberPicker.OnVa
             SupportMapFragment mapFrag =
                     (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
             mMap = mapFrag.getMap();
+
+            if (mMap != null) {
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+                        View v = getLayoutInflater().inflate(R.layout.info_window, null);
+                        TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
+                        TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
+                        TextView tvLng = (TextView) v.findViewById(R.id.tv_lng);
+                        TextView tvSnippet = (TextView) v.findViewById(R.id.tv_snippet);
+
+                        LatLng ll = marker.getPosition();
+
+                        tvLocality.setText(marker.getTitle());
+                        tvLat.setText("Latitude: " + ll.latitude);
+                        tvLng.setText("Longitude: " + ll.longitude);
+                        tvSnippet.setText(marker.getSnippet());
+
+                        return v;
+                    }
+                });
+
+                mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    @Override
+                    public void onMapLongClick(LatLng ll) {
+                        Geocoder gc = new Geocoder(CreateEvent_2.this);
+                        List<Address> list = null;
+                        try {
+                            list = gc.getFromLocation(ll.latitude, ll.longitude, 1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+                        Address add = list.get(0);
+                        setMarker(add.getLocality(), ll.latitude, ll.longitude);
+
+                        eventAddress = add.getLocality();
+
+                        latitude = String.valueOf(ll.latitude);
+                        longitude = String.valueOf(ll.longitude);
+
+                        System.out.println("mapclicklistener loc: " + latitude + " , " + longitude );
+
+                    }
+                });
+
+
+            }
+
         }
         return (mMap != null);
-    }
-
-    private void gotoLocation(double lat, double lng){
-        LatLng ll = new LatLng(lat, lng);
-        CameraUpdate update = CameraUpdateFactory.newLatLng(ll);
-        mMap.moveCamera(update);
     }
 
     private void gotoLocation(double lat, double lng, float zoom) {
         LatLng ll = new LatLng(lat, lng);
         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, zoom);
         mMap.moveCamera(update);
+    }
+
+    private void gotoCurrentLocation() {
+        Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mLocationClient);
+        if (currentLocation == null) {
+            Toast.makeText(this, "Current Location is not Available", Toast.LENGTH_SHORT).show();
+        } else {
+            LatLng ll = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, DEFAULTZOOM);
+            mMap.animateCamera(update);
+        }
+
+        setMarker("Current Location", currentLocation.getLatitude(), currentLocation.getLongitude());
+
+        eventAddress = "My Current Location";
+        latitude = String.valueOf(currentLocation.getLatitude());
+        longitude = String.valueOf(currentLocation.getLongitude());
+
+        System.out.println("currentlocation loc: " + latitude + " , " + longitude );
+    }
+
+    public void setMarker(String locality, double lat, double lng) {
+        if (marker != null) {
+            marker.remove();
+        }
+
+        MarkerOptions options = new MarkerOptions()
+                .title(locality)
+                .position(new LatLng(lat, lng));
+        marker = mMap.addMarker(options);
+    }
+
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Toast.makeText(this, "Connected to Location Service", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
 }
