@@ -47,8 +47,6 @@ public class CreateEvent_3 extends Activity {
     private SessionManager session;
     String name;
 
-    private String userID = null;
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -100,80 +98,60 @@ public class CreateEvent_3 extends Activity {
             Toast.makeText(getApplicationContext(), "Please enter a value.", Toast.LENGTH_SHORT).show();
         } else {
             postParams(email);
-
-            //get userID and eventID from shared preferences
-            HashMap<String, String> user = session.getUserDetails();
-            final String uID = user.get(SessionManager.GUEST_ID);
-
-            if(uID =="") {
-                Toast.makeText(getApplicationContext(), "User doesn't exist.", Toast.LENGTH_LONG).show();
-            }else {
-                Toast.makeText(getApplicationContext(), "User ID:"+uID, Toast.LENGTH_LONG).show();
-                Model md = new Model(email);
-                myGuestlist.add(md);
-                adapter.notifyDataSetChanged();
-                txtEmail.setText("");
-
-            }
-
-
         }
     }
 
-    public static boolean isNumeric(String str)
-    {
-        try
-        {
-            double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
-            return false;
+    public static boolean isInteger(String s) {
+        return isInteger(s,10);
+    }
+
+    public static boolean isInteger(String s, int radix) {
+        if(s.isEmpty()) return false;
+        for(int i = 0; i < s.length(); i++) {
+            if(i == 0 && s.charAt(i) == '-') {
+                if(s.length() == 1) return false;
+                else continue;
+            }
+            if(Character.digit(s.charAt(i),radix) < 0) return false;
         }
         return true;
     }
-
 
     private void postParams(String email) {
         final String eMail = email;
         // Tag used to cancel the request
         String tag_string_req = "req_guests";
 
-        pDialog.setMessage("Logging in ...");
+        pDialog.setMessage("Finding Guest...");
         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "Login Response: " + response.toString());
+                Log.d(TAG, "Response: " + response.toString());
                 hideDialog();
 
                 try {
-
-
                     JSONObject jObj = new JSONObject(response);
                     boolean error = jObj.getBoolean("error");
 
                     int uid = jObj.getInt("uid");
-                    userID = Integer.toString(uid);
+                    final String userID = Integer.toString(uid);
 
-                    if(isNumeric(userID)) {
-                        session.storeGuestID(userID);
-                    }
-                    else {
-                        session.storeGuestID("");
-                    }
+                    Model md = new Model(eMail);
+                    myGuestlist.add(md);
+                    adapter.notifyDataSetChanged();
+                    txtEmail.setText("");
 
-
-                    //String userName = jObj.getString("name");
-                    Toast.makeText(getApplicationContext(), "user ID: " + userID, Toast.LENGTH_LONG).show();
-                    //name = userName;
+                    HashMap<String, String> user = session.getUserDetails();
+                    final String eventID = user.get(SessionManager.EVENT_ID);
+                    postParamsTwo(eventID, userID);
 
                 } catch (JSONException e) {
                     // JSON error
                     e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "User Doesn't Exist", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -193,6 +171,60 @@ public class CreateEvent_3 extends Activity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("tag", "checkGuest");
                 params.put("email", eMail);
+
+                return params;
+            }
+
+        };
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
+
+    private void postParamsTwo(String eID, String uID) {
+        final String event_id = eID;
+        final String uid = uID;
+        // Tag used to cancel the request
+        String tag_string_req = "req_guests_add";
+
+        pDialog.setMessage("Adding Guest...");
+        showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response: " + response.toString());
+                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Error:"+e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("tag", "addGuest");
+                params.put("event_id", event_id);
+                params.put("uid", uid);
 
                 return params;
             }
