@@ -34,11 +34,12 @@ import edu.nyit.evence.app.AppConfig;
 import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SQLiteHandler;
 import edu.nyit.evence.db.SessionManager;
+import edu.nyit.evence.model.Event;
 import edu.nyit.evence.tabs.SlidingTabLayout;
 import edu.nyit.evence.tabs.ViewPagerAdapter;
 
 
-public class MainEventsActivity extends ActionBarActivity {
+public class MainEventsActivity extends ActionBarActivity implements Tab1.Callbacks {
 
     // Declaring Your View and Variables
     private static final String TAG = Register.class.getSimpleName();
@@ -50,6 +51,9 @@ public class MainEventsActivity extends ActionBarActivity {
     CharSequence Titles[]={"Hosting","Invites"};
     int Numboftabs =2;
     private ProgressDialog pDialog;
+
+    public static final String EVENT_BUNDLE = "EVENT_BUNDLE";
+    private static final int REQUEST_CODE = 1001;
 
 
     //XXXXX
@@ -144,7 +148,6 @@ public class MainEventsActivity extends ActionBarActivity {
 
     private void getEventID(String userID) {
 
-
         final String uid = userID;
         // Tag used to cancel the request
         String  tag_json_obj = "req_event";
@@ -152,8 +155,9 @@ public class MainEventsActivity extends ActionBarActivity {
         pDialog.setMessage("Loading...");
         showpDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER, new Response.Listener<String>() {
-
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_REGISTER,
+                new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -256,4 +260,13 @@ public class MainEventsActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onItemSelected(Event event) {
+        Bundle b = event.toBundle();
+        Intent intent = new Intent(this, EventDetailActivity.class);
+        intent.putExtra(EVENT_BUNDLE, b);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
 }

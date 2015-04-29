@@ -53,4 +53,7 @@
 
     <string name="select_time">select when to start the geofence</string>
 
+    <string name="event_name_placeholder">Event name</string>
+    <string name="placeholder">placeholder</string>
+
 </resources>
