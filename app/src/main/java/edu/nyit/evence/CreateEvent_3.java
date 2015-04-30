@@ -75,7 +75,7 @@ public class CreateEvent_3 extends Activity {
         btnPrevious = (Button) findViewById(R.id.btnPrevious);
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CreateEvent_3.class);
+                Intent intent = new Intent(getApplicationContext(), CreateEvent_2.class);
                 startActivity(intent);
             }
         });
@@ -99,22 +99,6 @@ public class CreateEvent_3 extends Activity {
         } else {
             postParams(email);
         }
-    }
-
-    public static boolean isInteger(String s) {
-        return isInteger(s,10);
-    }
-
-    public static boolean isInteger(String s, int radix) {
-        if(s.isEmpty()) return false;
-        for(int i = 0; i < s.length(); i++) {
-            if(i == 0 && s.charAt(i) == '-') {
-                if(s.length() == 1) return false;
-                else continue;
-            }
-            if(Character.digit(s.charAt(i),radix) < 0) return false;
-        }
-        return true;
     }
 
     private void postParams(String email) {

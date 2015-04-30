@@ -20,22 +20,19 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-
 import edu.nyit.evence.app.AppConfig;
 import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SessionManager;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
@@ -47,9 +44,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import android.location.Location;
-import android.location.LocationManager;
 import android.widget.Toast;
 
 
@@ -71,14 +66,13 @@ public class CreateEvent_2 extends FragmentActivity implements
     private ProgressDialog pDialog;
     private SessionManager session;
     private String eventAddress;
-    String latitude = null;
-    String longitude = null;
     private double radius;
     private int geoFenceID;
     private String startTimeFormatted;
     private String endTimeFormatted;
     private GoogleMap mMap;
-
+    String latitude = null;
+    String longitude = null;
     private static final double NEWYORK_LAT = 40.714353, NEWYORK_LNG = -74.005973;
     private static final float DEFAULTZOOM = 10;
 
@@ -90,6 +84,7 @@ public class CreateEvent_2 extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_2);
 
+
         if (initMap()) {
             Toast.makeText(this, "Ready to map!", Toast.LENGTH_SHORT).show();
             //mMap.setMyLocationEnabled(true);
@@ -98,6 +93,7 @@ public class CreateEvent_2 extends FragmentActivity implements
 
             mLocationClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
             mLocationClient.connect();
+
         } else {
             Toast.makeText(this, "Map not available!", Toast.LENGTH_SHORT).show();
         }
@@ -134,8 +130,7 @@ public class CreateEvent_2 extends FragmentActivity implements
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
+            public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -161,8 +156,6 @@ public class CreateEvent_2 extends FragmentActivity implements
         radius = 8.9;
         geoFenceID = 5555555;
 
-        //final String eventLatd = String.valueOf(latitude);
-        //final String eventLong = String.valueOf(longitude);
         final String eventRadius = String.valueOf(radius);
         final String gFenceID = Integer.toString(geoFenceID);
 
@@ -410,32 +403,34 @@ public class CreateEvent_2 extends FragmentActivity implements
         String location = txtAddress.getText().toString();
 
 
-
         if (location.length() == 0) {
             Toast.makeText(this, "Please enter a location", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Geocoder gc = new Geocoder(this);
+        Geocoder gc = new Geocoder(this, Locale.getDefault());
         List<Address> list = gc.getFromLocationName(location, 1);
         Address add = list.get(0);
         String locality = add.getLocality();
 
-        Toast.makeText(this, locality, Toast.LENGTH_LONG).show();
+        String address = add.getAddressLine(0);
+        String area = add.getAdminArea();
+        String zip = add.getPostalCode();
+
+        Toast.makeText(this, address + ", " + locality + " " + area + " " + zip, Toast.LENGTH_LONG).show();
 
         double lat = add.getLatitude();
         double lng = add.getLongitude();
 
         gotoLocation(lat, lng, DEFAULTZOOM);
 
-        setMarker(locality, lat, lng);
+        setMarker(address, locality, lat, lng);
 
-        eventAddress = locality;
-
+        eventAddress = address;
         latitude = String.valueOf(lat);
         longitude = String.valueOf(lng);
 
-        System.out.println("geolocate loc: " + latitude + " , " + longitude );
+        System.out.println("geolocate loc: " + latitude + " , " + longitude);
 
     }
 
@@ -465,17 +460,17 @@ public class CreateEvent_2 extends FragmentActivity implements
                     @Override
                     public View getInfoContents(Marker marker) {
                         View v = getLayoutInflater().inflate(R.layout.info_window, null);
-                        TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
+                        TextView tvAddress = (TextView) v.findViewById(R.id.tv_address);
                         TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
                         TextView tvLng = (TextView) v.findViewById(R.id.tv_lng);
-                        TextView tvSnippet = (TextView) v.findViewById(R.id.tv_snippet);
+                        TextView tvArea = (TextView) v.findViewById(R.id.tv_area);
 
                         LatLng ll = marker.getPosition();
 
-                        tvLocality.setText(marker.getTitle());
+                        tvAddress.setText(marker.getTitle());
                         tvLat.setText("Latitude: " + ll.latitude);
                         tvLng.setText("Longitude: " + ll.longitude);
-                        tvSnippet.setText(marker.getSnippet());
+                        tvArea.setText(marker.getSnippet());
 
                         return v;
                     }
@@ -493,14 +488,20 @@ public class CreateEvent_2 extends FragmentActivity implements
                             return;
                         }
                         Address add = list.get(0);
-                        setMarker(add.getLocality(), ll.latitude, ll.longitude);
+                        String locality = add.getLocality();
+                        String address = add.getAddressLine(0);
+                        String area = add.getAdminArea();
+                        String zip = add.getPostalCode();
 
-                        eventAddress = add.getLocality();
+                        Toast.makeText(getApplicationContext(), address + ", " + locality + " " + area + " " + zip, Toast.LENGTH_LONG).show();
 
+                        setMarker(address, locality, ll.latitude, ll.longitude);
+
+                        eventAddress = address;
                         latitude = String.valueOf(ll.latitude);
                         longitude = String.valueOf(ll.longitude);
 
-                        System.out.println("mapclicklistener loc: " + latitude + " , " + longitude );
+                        System.out.println("mapclicklistener loc: " + latitude + " , " + longitude);
 
                     }
                 });
@@ -518,7 +519,7 @@ public class CreateEvent_2 extends FragmentActivity implements
         mMap.moveCamera(update);
     }
 
-    private void gotoCurrentLocation() {
+    private void gotoCurrentLocation() throws IOException {
         Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mLocationClient);
         if (currentLocation == null) {
             Toast.makeText(this, "Current Location is not Available", Toast.LENGTH_SHORT).show();
@@ -528,22 +529,33 @@ public class CreateEvent_2 extends FragmentActivity implements
             mMap.animateCamera(update);
         }
 
-        setMarker("Current Location", currentLocation.getLatitude(), currentLocation.getLongitude());
+        Geocoder currentLoc = new Geocoder(this, Locale.getDefault());
+        List<Address> list = currentLoc.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+        Address add = list.get(0);
+        String locality = add.getLocality();
+        String address = add.getAddressLine(0);
+        String area = add.getAdminArea();
+        String zip = add.getPostalCode();
 
-        eventAddress = "My Current Location";
+        Toast.makeText(this, address + ", " + locality + " " + area + " " + zip, Toast.LENGTH_LONG).show();
+
+        setMarker(address, locality, currentLocation.getLatitude(), currentLocation.getLongitude());
+
+        eventAddress = address;
         latitude = String.valueOf(currentLocation.getLatitude());
         longitude = String.valueOf(currentLocation.getLongitude());
 
-        System.out.println("currentlocation loc: " + latitude + " , " + longitude );
+        System.out.println("currentLocation loc: " + latitude + " , " + longitude);
     }
 
-    public void setMarker(String locality, double lat, double lng) {
+    public void setMarker(String address, String area, double lat, double lng) {
         if (marker != null) {
             marker.remove();
         }
 
         MarkerOptions options = new MarkerOptions()
-                .title(locality)
+                .title(address)
+                .snippet(area)
                 .position(new LatLng(lat, lng));
         marker = mMap.addMarker(options);
     }

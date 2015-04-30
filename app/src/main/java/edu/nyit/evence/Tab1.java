@@ -22,18 +22,23 @@ import edu.nyit.evence.model.Event;
 public class Tab1 extends ListFragment {
 
     List<Event> events = new EventData().getEvents();
+
     private Callbacks activity;
 
-    public Tab1(){
-    }
+    public Tab1(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+
+
         EventAdapter adapter = new EventAdapter(getActivity(), R.layout.item_event, events);
+
         setListAdapter(adapter);
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

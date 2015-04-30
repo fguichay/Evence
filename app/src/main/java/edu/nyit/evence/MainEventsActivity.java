@@ -66,7 +66,6 @@ public class MainEventsActivity extends ActionBarActivity implements Tab1.Callba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         //XXXXX
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
@@ -80,10 +79,6 @@ public class MainEventsActivity extends ActionBarActivity implements Tab1.Callba
         final String userID = user.get(SessionManager.KEY_USER_ID);
 
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-
-
-
-
 
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);

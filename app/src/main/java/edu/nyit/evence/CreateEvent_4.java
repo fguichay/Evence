@@ -124,8 +124,8 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
             //double check code below..
 
             public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(), CreateEvent_3.class);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), CreateEvent_3.class);
+                startActivity(intent);
 
             }
         });
