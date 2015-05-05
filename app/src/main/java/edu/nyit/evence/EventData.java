@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.nyit.evence.model.Event;
 
+
 public class EventData {
 
     private List<Event> events = new ArrayList<Event>();
@@ -22,6 +23,5 @@ public class EventData {
         events.add(new Event("Pulkit's Barmitzvah", "Event with 10 other users on May 16th, 2015 at 8:30PM."));
         events.add(new Event("Shrey's Densit Appointment", "Event with 2 other users on June 8th, 2015 at 2:00PM."));
     }
-
 
 }

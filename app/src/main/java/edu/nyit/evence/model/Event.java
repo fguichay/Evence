@@ -24,6 +24,14 @@ public class Event {
     public static final String EVENT_NAME = "eventName";
     public static final String EVENT_DESC = "eventDesc";
 
+    //	Used when creating the data object
+    public Event(){
+    }
+
+    public Event(String name, String desc){
+        this.name = name;
+        this.desc = desc;
+    }
 
     public String getName() {
         return name;
@@ -121,11 +129,6 @@ public class Event {
         this.departMsg = departMsg;
     }
 
-    //	Used when creating the data object
-    public Event(String name, String desc) {
-        this.name = name;
-        this.desc = desc;
-    }
 
     //	Create from a bundle
     public Event(Bundle b) {

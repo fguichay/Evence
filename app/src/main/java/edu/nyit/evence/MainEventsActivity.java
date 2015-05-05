@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -22,12 +24,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.nyit.evence.app.AppConfig;
@@ -37,6 +43,8 @@ import edu.nyit.evence.db.SessionManager;
 import edu.nyit.evence.model.Event;
 import edu.nyit.evence.tabs.SlidingTabLayout;
 import edu.nyit.evence.tabs.ViewPagerAdapter;
+import static edu.nyit.evence.parser.EventJSONParser.parseHosted;
+//import static edu.nyit.evence.parser.EventJSONParser.parseInvited;
 
 
 public class MainEventsActivity extends ActionBarActivity implements Tab1.Callbacks {
@@ -66,7 +74,6 @@ public class MainEventsActivity extends ActionBarActivity implements Tab1.Callba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //XXXXX
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
 
@@ -75,7 +82,6 @@ public class MainEventsActivity extends ActionBarActivity implements Tab1.Callba
         session.checkLogin();
 
         HashMap<String, String> user = session.getUserDetails();
-        // name
         final String userID = user.get(SessionManager.KEY_USER_ID);
 
         Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
@@ -95,7 +101,6 @@ public class MainEventsActivity extends ActionBarActivity implements Tab1.Callba
 
         //txtName.setText(name);
         //txtEmail.setText(email);
-
 
 
         // Creating The Toolbar and setting it as the Toolbar for the activity
@@ -154,33 +159,33 @@ public class MainEventsActivity extends ActionBarActivity implements Tab1.Callba
                 AppConfig.URL_REGISTER,
                 new Response.Listener<String>() {
 
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, response.toString());
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, response.toString());
 
-                try {
+                        try {
 
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
+                            JSONObject jObj = new JSONObject(response);
+                            boolean error = jObj.getBoolean("error");
 
-                    int id = jObj.getInt("event_id");
-                    String eventID = Integer.toString(id);
-                    Toast.makeText(getApplicationContext(), "event id: " + eventID ,Toast.LENGTH_LONG).show();
-                    Log.d(TAG, "this is the event id beinbg passes" + eventID);
-                    session.createEvent(eventID);
+                            int id = jObj.getInt("event_id");
+                            String eventID = Integer.toString(id);
+                            Toast.makeText(getApplicationContext(), "event id: " + eventID ,Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "this is the event id beinbg passes" + eventID);
+                            session.createEvent(eventID);
 
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(),
-                            "Error: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(),
+                                    "Error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
 
-                hidepDialog();
+                        hidepDialog();
 
-            }
-        }, new Response.ErrorListener() {
+                    }
+                }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {

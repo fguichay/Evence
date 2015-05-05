@@ -15,7 +15,9 @@ import edu.nyit.evence.model.Event;
 
 public class EventJSONParser {
 
-    /*public static List<Event> parseFeed(String content) {
+   public static List<Event> parseHosted(String content) {
+
+       System.out.println("this is the content: " + content);
 
         try {
             JSONArray ar = new JSONArray(content);
@@ -27,18 +29,51 @@ public class EventJSONParser {
                 Event event = new Event();
 
                 event.setName(obj.getString("name"));
-                event.setDesc(obj.getString("instructions"));
+                event.setDesc(obj.getString("descr"));
+
+                eventList.add(event);
+
+            }
+
+            return eventList;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
+
+/*    public static List<Event> parseInvited(String content) {
+
+        try {
+            JSONArray ar = new JSONArray(content);
+            List<Event> eventList = new ArrayList<>();
+
+            for (int i = 0; i < ar.length(); i++) {
+
+                JSONObject obj = ar.getJSONObject(i);
+                Event event = new Event();
+
+                event.setName(obj.getString("name"));
+                event.setDesc(obj.getString("desc"));
 
 
                 eventList.add(event);
             }
 
-            return eventList;
+
+            eventsInvited = eventList;
+            return eventsInvited;
+
+
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
 
     }*/
+
 
 }
