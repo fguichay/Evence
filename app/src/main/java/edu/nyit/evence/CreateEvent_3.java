@@ -27,7 +27,7 @@ import java.util.Map;
 
 import edu.nyit.evence.app.AppConfig;
 import edu.nyit.evence.app.AppController;
-import edu.nyit.evence.custom.CustomAdapter;
+import edu.nyit.evence.custom.guestListAdapter;
 import edu.nyit.evence.custom.Model;
 import edu.nyit.evence.db.SessionManager;
 
@@ -42,7 +42,7 @@ public class CreateEvent_3 extends Activity {
 
     private ArrayList<String> tempList;
 
-    private CustomAdapter adapter;
+    private guestListAdapter adapter;
     private ProgressDialog pDialog;
     private SessionManager session;
     String name;
@@ -69,7 +69,7 @@ public class CreateEvent_3 extends Activity {
         txtEmail = (EditText) findViewById(R.id.txtEmail);
 
         myGuestlist = new ArrayList<Model>();
-        adapter = new CustomAdapter(getApplicationContext(), myGuestlist);
+        adapter = new guestListAdapter(getApplicationContext(), myGuestlist);
         lvGuestlist.setAdapter(adapter);
 
         btnPrevious = (Button) findViewById(R.id.btnPrevious);

@@ -18,13 +18,13 @@ import android.widget.TextView;
 
 import edu.nyit.evence.R;
 
-public class CustomAdapter extends BaseAdapter {
+public class guestListAdapter extends BaseAdapter {
 
     Context context;
     ArrayList<Model> modelList;
 
 
-    public CustomAdapter(Context context, ArrayList<Model> modelList) {
+    public guestListAdapter(Context context, ArrayList<Model> modelList) {
         this.context = context;
         this.modelList = modelList;
     }

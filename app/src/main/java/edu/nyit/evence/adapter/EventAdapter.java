@@ -1,4 +1,4 @@
-package edu.nyit.evence;
+package edu.nyit.evence.adapter;
 
 /**
  * Created by Frank on 4/26/2015.
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import edu.nyit.evence.R;
 import edu.nyit.evence.model.Event;
 
 public class EventAdapter extends ArrayAdapter<Event>{

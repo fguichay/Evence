@@ -426,7 +426,7 @@ public class CreateEvent_2 extends FragmentActivity implements
 
         setMarker(address, locality, lat, lng);
 
-        eventAddress = address;
+        eventAddress = address + ", " + locality + " " + area + " " + zip;
         latitude = String.valueOf(lat);
         longitude = String.valueOf(lng);
 
@@ -497,7 +497,7 @@ public class CreateEvent_2 extends FragmentActivity implements
 
                         setMarker(address, locality, ll.latitude, ll.longitude);
 
-                        eventAddress = address;
+                        eventAddress = address + ", " + locality + " " + area + " " + zip;
                         latitude = String.valueOf(ll.latitude);
                         longitude = String.valueOf(ll.longitude);
 
@@ -541,7 +541,7 @@ public class CreateEvent_2 extends FragmentActivity implements
 
         setMarker(address, locality, currentLocation.getLatitude(), currentLocation.getLongitude());
 
-        eventAddress = address;
+        eventAddress = address + ", " + locality + " " + area + " " + zip;
         latitude = String.valueOf(currentLocation.getLatitude());
         longitude = String.valueOf(currentLocation.getLongitude());
 

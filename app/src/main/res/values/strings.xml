@@ -24,25 +24,6 @@
     <string name="btn_next">NEXT</string>
 
 
-    <string-array name="array_name">
-        <item>1 Mile</item>
-        <item>2 Miles</item>
-        <item>3 Miles</item>
-        <item>4 Miles</item>
-        <item>5 Miles</item>
-    </string-array>
-
-    <string-array name="Planets">
-        <item>Sun</item>
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
 
 
 

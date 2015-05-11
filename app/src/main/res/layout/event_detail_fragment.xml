@@ -11,19 +11,119 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/placeholder"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/viewAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Where:"
+        android:textColor="#314159"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_gravity="left" />
+
+    <TextView
+        android:id="@+id/tvAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/placeholder"
+        android:layout_gravity="left" />
+
+    <TextView
+        android:id="@+id/viewMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Map:"
+        android:textColor="#314159"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_gravity="left" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:id="@+id/viewStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="When:"
+        android:textColor="#314159"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_gravity="left" />
+
+    <TextView
+        android:id="@+id/tvStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/placeholder"
+        android:layout_gravity="left" />
+
+    <TextView
+        android:id="@+id/viewDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description:"
+        android:textColor="#314159"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:layout_gravity="left" />
+
+    <TextView
         android:id="@+id/tvDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:text="@string/placeholder" />
+        android:layout_marginBottom="40dp"
+        android:text="@string/placeholder"
+        android:layout_gravity="left" />
+
+    <LinearLayout
+        android:id="@+id/bottom_control_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="#D14747"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:layout_marginRight="5dp" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="#2eb8b8"
+            android:text="Edit"
+            android:textColor="@color/white"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+        <Button
+            android:id="@+id/btnViewGuest"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:background="#2eb8b8"
+            android:text="Guestlist"
+            android:textColor="@color/white"
+            android:layout_marginLeft="5dp" />
+    </LinearLayout>
 
 
 </LinearLayout>
