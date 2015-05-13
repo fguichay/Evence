@@ -21,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +69,6 @@ public class Tab1 extends ListFragment {
 
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v =inflater.inflate(R.layout.tab_1,container,false);
@@ -93,7 +94,12 @@ public class Tab1 extends ListFragment {
                         Log.d(TAG, response.toString());
 
                         eventList = EventJSONParser.parseHosted(response);
-                        updateDisplay();
+
+                        try {
+                            updateDisplay();
+                        }catch(NullPointerException e){
+                            e.printStackTrace();
+                        }
 
                         hidepDialog();
                     }
@@ -120,10 +126,8 @@ public class Tab1 extends ListFragment {
         AppController.getInstance().addToRequestQueue(strReq, tag_json_obj);
     }
 
-
-    protected void updateDisplay(){
+    protected void updateDisplay() throws NullPointerException {
         EventAdapter adapter = new EventAdapter(getActivity(), R.layout.item_event, eventList);
-
         setListAdapter(adapter);
     }
 

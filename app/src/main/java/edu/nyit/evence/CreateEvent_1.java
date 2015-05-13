@@ -27,9 +27,12 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
 import edu.nyit.evence.app.AppConfig;
 import edu.nyit.evence.app.AppController;
 import edu.nyit.evence.db.SessionManager;
@@ -128,21 +131,32 @@ public class CreateEvent_1 extends Activity {
             public void onClick(View view) {
                 desc = txtDesc.getText().toString();
                 eventName = txtEventName.getText().toString();
-
                 session.storeEventName(eventName);
 
-                //Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID, Toast.LENGTH_LONG).show();
-
                 formatTime(timeStart, timeEnd, dateStart, dateEnd);
+
                 System.out.println(startFormatted);
                 System.out.println(endFormatted);
 
-                System.out.println("names before passed: "+ eventName + desc);
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date dt = new Date();
+                final String currentDateTimeString = dateFormat.format(dt);
 
-                postParams(eventID, eventName, startFormatted, endFormatted, desc);
-
-                Intent intent = new Intent(getApplicationContext(), CreateEvent_2.class);
-                startActivity(intent);
+                //Must Have a name and start time
+                if(eventName.isEmpty() || startFormatted.equals("null null") || endFormatted.equals("null null")) {
+                    Toast.makeText(getApplicationContext(),
+                            "Events Must Have a Name, Start and End Time!", Toast.LENGTH_LONG).show();
+                }else if(startFormatted.compareTo(currentDateTimeString) < 0){
+                    Toast.makeText(getApplicationContext(),
+                            "The Selected Start Time Has Already Passed!", Toast.LENGTH_LONG).show();
+                 }else if(endFormatted.compareTo(startFormatted) < 0) {
+                    Toast.makeText(getApplicationContext(),
+                            "The Selected End Time Precedes The Start Time!", Toast.LENGTH_LONG).show();
+                }else{
+                    postParams(eventID, eventName, startFormatted, endFormatted, desc);
+                    Intent intent = new Intent(getApplicationContext(), CreateEvent_2.class);
+                    startActivity(intent);
+                }
             }
 
         });
@@ -276,7 +290,7 @@ public class CreateEvent_1 extends Activity {
     }
 
     //format start time and end time to: mm:dd:yyyy hh:mm:ss
-    public void formatTime(String timeStart, String timeEnd, String dateStart, String dateEnd) {
+    public void formatTime(String timeStart, String timeEnd, String dateStart, String dateEnd){
         startFormatted = dateStart + " " + timeStart;
         endFormatted = dateEnd + " " + timeEnd;
     }
@@ -289,7 +303,7 @@ public class CreateEvent_1 extends Activity {
         final String eStart = start;
         final String eEnd = end;
         final String eDesc = desc;
-        System.out.println("this is event name"+ eName + eDesc);
+
         // Tag used to cancel the request
         String tag_json_obj = "req_event";
 

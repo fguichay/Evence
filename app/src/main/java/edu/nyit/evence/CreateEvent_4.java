@@ -54,6 +54,7 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
     private String eventName;
     private String useDefault;
     private String useCustom;
+    private int customSet;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,29 +90,28 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
                 String arrive1 = txtArriving.getText().toString();
                 String depart1 = txtDeparting.getText().toString();
 
-                if(arrive1.length() == 0  && depart1.length() == 0){
+                if(customSet == 0){
                     useDefault = "1";
                     useCustom = "0";
-
                     arrivingMessage = "Welcome to " + eventName;
                     departingMessage = "Thank you for attending " + eventName;
+
                 } else {
                     useDefault = "0";
                     useCustom = "1";
-
                     arrivingMessage = arrive1;
                     departingMessage = depart1;
-
                 }
 
-                Toast.makeText(getApplicationContext(), "LALALAevent id: " + eventID, Toast.LENGTH_LONG).show();
-
-                //insert code to pass the custom notification messages onyl if the custom button is selected
-
-                postParams(eventID, useDefault, useCustom, arrivingMessage, departingMessage);
-
-                Intent intent = new Intent(getApplicationContext(), MainEventsActivity.class);
-                startActivity(intent);
+                if(arrivingMessage.length() == 0 || departingMessage.length() == 0){
+                    Toast.makeText(getApplicationContext(),
+                    "Please Provide Your Custom Messages.", Toast.LENGTH_LONG).show();
+                }else {
+                    //insert code to pass the custom notification messages only if the custom button is selected
+                    postParams(eventID, useDefault, useCustom, arrivingMessage, departingMessage);
+                    Intent intent = new Intent(getApplicationContext(), MainEventsActivity.class);
+                    startActivity(intent);
+                }
 
             }
 
@@ -214,11 +214,13 @@ public class CreateEvent_4 extends Activity implements RadioGroup.OnCheckedChang
         switch (checkedId) {
             case R.id.radioDefault:
                 op1 = "default";
+                customSet = 0;
                 actv(false);
                 break;
 
             case R.id.radioCustom:
                 op1 = "custom";
+                customSet = 1;
                 actv(true);
                 break;
         }

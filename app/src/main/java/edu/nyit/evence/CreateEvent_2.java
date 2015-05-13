@@ -4,48 +4,51 @@ package edu.nyit.evence;
  * Created by Frank on 3/17/2015.
  */
 
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
-import android.widget.NumberPicker;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.StringRequest;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import edu.nyit.evence.app.AppConfig;
-import edu.nyit.evence.app.AppController;
-import edu.nyit.evence.db.SessionManager;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.model.MarkerOptions;
-import android.location.Location;
-import android.widget.Toast;
+        import android.app.Dialog;
+        import android.app.ProgressDialog;
+        import android.content.Intent;
+        import android.graphics.Color;
+        import android.location.Address;
+        import android.location.Geocoder;
+        import android.os.Bundle;
+        import android.support.v4.app.FragmentActivity;
+        import android.util.Log;
+        import android.view.inputmethod.InputMethodManager;
+        import android.widget.Button;
+        import android.view.View;
+        import android.view.View.OnClickListener;
+        import android.widget.EditText;
+        import android.widget.NumberPicker;
+        import android.widget.SeekBar;
+        import android.widget.TextView;
+        import com.android.volley.Request;
+        import com.android.volley.Response;
+        import com.android.volley.VolleyError;
+        import com.android.volley.VolleyLog;
+        import com.android.volley.toolbox.StringRequest;
+        import java.io.IOException;
+        import java.util.HashMap;
+        import java.util.List;
+        import java.util.Locale;
+        import java.util.Map;
+        import edu.nyit.evence.app.AppConfig;
+        import edu.nyit.evence.app.AppController;
+        import edu.nyit.evence.db.SessionManager;
+        import com.google.android.gms.common.ConnectionResult;
+        import com.google.android.gms.location.LocationListener;
+        import com.google.android.gms.location.LocationServices;
+        import com.google.android.gms.maps.CameraUpdate;
+        import com.google.android.gms.maps.GoogleMap;
+        import com.google.android.gms.maps.CameraUpdateFactory;
+        import com.google.android.gms.maps.SupportMapFragment;
+        import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+        import com.google.android.gms.maps.model.CircleOptions;
+        import com.google.android.gms.maps.model.LatLng;
+        import com.google.android.gms.maps.model.Marker;
+        import com.google.android.gms.common.api.GoogleApiClient;
+        import com.google.android.gms.maps.model.MarkerOptions;
+        import android.location.Location;
+        import android.widget.Toast;
 
 
 public class CreateEvent_2 extends FragmentActivity implements
@@ -66,7 +69,6 @@ public class CreateEvent_2 extends FragmentActivity implements
     private ProgressDialog pDialog;
     private SessionManager session;
     private String eventAddress;
-    private double radius;
     private int geoFenceID;
     private String startTimeFormatted;
     private String endTimeFormatted;
@@ -75,6 +77,8 @@ public class CreateEvent_2 extends FragmentActivity implements
     String longitude = null;
     private static final double NEWYORK_LAT = 40.714353, NEWYORK_LNG = -74.005973;
     private static final float DEFAULTZOOM = 10;
+
+    private int radius;
 
     GoogleApiClient mLocationClient;
     Marker marker;
@@ -118,15 +122,23 @@ public class CreateEvent_2 extends FragmentActivity implements
         barRadius = (SeekBar) findViewById(R.id.barRadius);
         viewRadius = (TextView) findViewById(R.id.viewRadius);
 
+        eventAddress = "";
+        startTimeFormatted = "";
+        endTimeFormatted = "";
 
         //initialize the radius seekbar
-        viewRadius.setText("Radius: " + barRadius.getProgress() + " Miles");
+        barRadius.setProgress(0);
+        barRadius.incrementProgressBy(5);
+        barRadius.setMax(100);
+
         barRadius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
+            //int progress = 0;
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                viewRadius.setText("Radius: " + String.valueOf(progress) + " Meters");
+
+                radius = progress;
             }
 
             @Override
@@ -134,7 +146,8 @@ public class CreateEvent_2 extends FragmentActivity implements
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                viewRadius.setText("Radius: " + progress + " Miles");
+                viewRadius.setText("Radius: " + barRadius.getProgress() + " Meters");
+
             }
         });
 
@@ -153,7 +166,7 @@ public class CreateEvent_2 extends FragmentActivity implements
             }
         });
 
-        radius = 8.9;
+        //radius = 8.9;
         geoFenceID = 5555555;
 
         final String eventRadius = String.valueOf(radius);
@@ -164,20 +177,17 @@ public class CreateEvent_2 extends FragmentActivity implements
         btnNext.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
-                //code to pass parameters to db once next button is clicked
-                postParams(eventID, eventAddress, latitude, longitude, eventRadius, gFenceID, startTimeFormatted, endTimeFormatted);
-
-                System.out.println("this is eventid: " + eventID);
-                System.out.println("this is eventAddress: " + eventAddress);
-                System.out.println("this is eventLatd: " + latitude);
-                System.out.println("this is eventLong: " + longitude);
-                System.out.println("this is eventRadius: " + eventRadius);
-                System.out.println("this is gfenceID: " + gFenceID);
-                System.out.println("this is geostarttime: " + startTimeFormatted);
-                System.out.println("this is geoendtime: " + endTimeFormatted);
-
-                Intent intent = new Intent(getApplicationContext(), CreateEvent_3.class);
-                startActivity(intent);
+                if(eventAddress.equals("")) {
+                    Toast.makeText(getApplicationContext(),
+                            "Please Enter a Location.", Toast.LENGTH_LONG).show();
+                }else if(startTimeFormatted.isEmpty()|| endTimeFormatted.isEmpty()){
+                    Toast.makeText(getApplicationContext(),
+                            "Please Select a Start and End Time for Your Geofence.", Toast.LENGTH_LONG).show();
+                }else{
+                    postParams(eventID, eventAddress, latitude, longitude, eventRadius, gFenceID, startTimeFormatted, endTimeFormatted);
+                    Intent intent = new Intent(getApplicationContext(), CreateEvent_3.class);
+                    startActivity(intent);
+                }
             }
 
         });
@@ -422,9 +432,10 @@ public class CreateEvent_2 extends FragmentActivity implements
         double lat = add.getLatitude();
         double lng = add.getLongitude();
 
-        gotoLocation(lat, lng, DEFAULTZOOM);
+        gotoLocation(lat, lng, 15);
 
         setMarker(address, locality, lat, lng);
+        //createGeofence(lat, lng, radius, "CIRCLE", "GEOFENCE");
 
         eventAddress = address + ", " + locality + " " + area + " " + zip;
         latitude = String.valueOf(lat);
@@ -525,7 +536,7 @@ public class CreateEvent_2 extends FragmentActivity implements
             Toast.makeText(this, "Current Location is not Available", Toast.LENGTH_SHORT).show();
         } else {
             LatLng ll = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, DEFAULTZOOM);
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(ll, 15);
             mMap.animateCamera(update);
         }
 
@@ -558,7 +569,21 @@ public class CreateEvent_2 extends FragmentActivity implements
                 .snippet(area)
                 .position(new LatLng(lat, lng));
         marker = mMap.addMarker(options);
+
+        mMap.addCircle(new CircleOptions()
+                .center(new LatLng(lat, lng)).radius(radius)
+                .fillColor(0x330000FF));
+
     }
+
+/*  public void createGeofence(double latitude, double longitude, int radius,
+                                String geofenceType, String title) {
+
+        Marker stopMarker = mMap.addMarker(new MarkerOptions()
+                .draggable(true)
+                .position(new LatLng(latitude, longitude))
+                .title(title));
+  }*/
 
 
     @Override
@@ -568,17 +593,14 @@ public class CreateEvent_2 extends FragmentActivity implements
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override
     public void onLocationChanged(Location location) {
-
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
     }
 
 }

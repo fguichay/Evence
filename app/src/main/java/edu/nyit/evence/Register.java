@@ -77,10 +77,25 @@ public class Register extends Activity {
                 String password = txtPassword.getText().toString();
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                    registerUser(name, email, password);
+
+                    if(!name.contains(" ")){
+                        Toast.makeText(getApplicationContext(),
+                                "Please Enter Your Full Name!", Toast.LENGTH_LONG)
+                                .show();
+                    }else if(!(email.contains("@") && email.contains("."))){
+                        Toast.makeText(getApplicationContext(),
+                                "Please Enter a Valid Email!", Toast.LENGTH_LONG)
+                                .show();
+                    }else if(password.length() < 8){
+                        Toast.makeText(getApplicationContext(),
+                                "Password Must Be 8 Or More Characters!", Toast.LENGTH_LONG)
+                                .show();
+                    }else{
+                        registerUser(name, email, password);
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "Please enter your details!", Toast.LENGTH_LONG)
+                            "Please Enter Your Information!", Toast.LENGTH_LONG)
                             .show();
                 }
             }

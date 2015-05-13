@@ -15,7 +15,7 @@ import edu.nyit.evence.model.Event;
 
 public class EventJSONParser {
 
-   public static List<Event> parseHosted(String content) {
+   public static List<Event> parseHosted(String content){
 
        System.out.println("this is the content: " + content);
 
@@ -57,7 +57,7 @@ public class EventJSONParser {
 
     }
 
-    public static List<Event> parseInvited(String content) {
+    public static List<Event> parseInvited(String content){
 
         System.out.println("this is the content: " + content);
 

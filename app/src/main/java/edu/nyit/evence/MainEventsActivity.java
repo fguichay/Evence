@@ -84,8 +84,6 @@ public class MainEventsActivity extends ActionBarActivity implements Tab1.Callba
         HashMap<String, String> user = session.getUserDetails();
         final String userID = user.get(SessionManager.KEY_USER_ID);
 
-        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
-
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
@@ -170,8 +168,6 @@ public class MainEventsActivity extends ActionBarActivity implements Tab1.Callba
 
                             int id = jObj.getInt("event_id");
                             String eventID = Integer.toString(id);
-                            Toast.makeText(getApplicationContext(), "event id: " + eventID ,Toast.LENGTH_LONG).show();
-                            Log.d(TAG, "this is the event id beinbg passes" + eventID);
                             session.createEvent(eventID);
 
 

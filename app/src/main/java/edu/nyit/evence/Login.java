@@ -48,8 +48,6 @@ public class Login extends Activity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
 
-        Toast.makeText(getApplicationContext(),"User Login Status: " + session.isLoggedIn(),Toast.LENGTH_LONG).show();
-
         // Progress dialog
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
@@ -77,7 +75,7 @@ public class Login extends Activity {
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
-                            "Please enter the credentials!", Toast.LENGTH_LONG)
+                            "Please Enter Your Credentials!", Toast.LENGTH_LONG)
                             .show();
                 }
             }
@@ -96,9 +94,7 @@ public class Login extends Activity {
 
     }
 
-    /**
-     * function to verify login details in mysql db
-     * */
+    //function to verify login details in mysql db
     private void checkLogin(final String email, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
@@ -119,7 +115,6 @@ public class Login extends Activity {
 
                     int uid = jObj.getInt("uid");
                     String id = Integer.toString(uid);
-                    Toast.makeText(getApplicationContext(), "id: " + id ,Toast.LENGTH_LONG).show();
 
                     // Check for error node in json
                     if (!error) {
@@ -133,11 +128,13 @@ public class Login extends Activity {
                         finish();
                     } else {
                         // Error in login. Get the error message
+                        Toast.makeText(getApplicationContext(), "Email or Password Incorrect!", Toast.LENGTH_LONG).show();
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
+                    Toast.makeText(getApplicationContext(), "Email or Password Incorrect!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
 

@@ -21,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,8 +94,14 @@ public class Tab2 extends ListFragment {
                     public void onResponse(String response) {
                         Log.d(TAG, response.toString());
 
+
                         eventList = EventJSONParser.parseInvited(response);
-                        updateDisplay();
+
+                        try{
+                            updateDisplay();
+                        }catch(NullPointerException e){
+                            e.printStackTrace();
+                        }
 
                         hidepDialog();
                     }
@@ -121,9 +129,8 @@ public class Tab2 extends ListFragment {
     }
 
 
-    protected void updateDisplay(){
+    protected void updateDisplay() throws NullPointerException {
         EventAdapter adapter = new EventAdapter(getActivity(), R.layout.item_event, eventList);
-
         setListAdapter(adapter);
     }
 
