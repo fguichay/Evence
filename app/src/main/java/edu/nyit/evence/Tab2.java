@@ -97,11 +97,7 @@ public class Tab2 extends ListFragment {
 
                         eventList = EventJSONParser.parseInvited(response);
 
-                        try{
                             updateDisplay();
-                        }catch(NullPointerException e){
-                            e.printStackTrace();
-                        }
 
                         hidepDialog();
                     }

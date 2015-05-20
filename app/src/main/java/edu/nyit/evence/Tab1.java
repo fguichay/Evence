@@ -77,6 +77,7 @@ public class Tab1 extends ListFragment {
 
     }
 
+    //method to pull "hosted" events data
     private void requestData(String id, String tag){
 
         final String uid = id;

@@ -113,10 +113,7 @@ public class Register extends Activity {
 
     }
 
-    /**
-     * Function to store user in MySQL database will post params(tag, name,
-     * email, password) to register url
-     * */
+    //method to register user
     private void registerUser(final String name, final String email, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";

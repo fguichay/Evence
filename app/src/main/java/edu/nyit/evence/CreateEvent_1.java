@@ -295,7 +295,7 @@ public class CreateEvent_1 extends Activity {
         endFormatted = dateEnd + " " + timeEnd;
     }
 
-    //method to post parameters to db
+    //method to post event details to db
     private void postParams(String id, String name, String start, String end, String desc) {
         System.out.println("create event1"+id);
         final String eID = id;
